@@ -77,7 +77,7 @@
     <div class="sidebar d-none d-md-block">
         <div class="mb-4">
             <h4 class="mb-3">
-                <a class="nav-link" href="{% url 'home'%}">
+                <a class="custom-brand" href="{% url 'home'%}">
                     <i class="fas fa-utensils me-2"></i>
                     Auntie's Cookbook
                 </a>
@@ -127,7 +127,7 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="container-fluid py-4">
+        <div class="container-fluid pb-4">
             <!-- Messages -->
             {% if messages %}
             {% for message in messages %}

@@ -12,9 +12,23 @@ body {
     color: var(--primary-color);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary-color);
+}
+
 /* Nav-link styling */
 .nav-link {
     color: var(--accent-color);
+}
+
+.custom-brand {
+    color: var(--accent-color);
+    text-decoration: none;
 }
 
 .nav-link:hover {
@@ -67,11 +81,36 @@ body {
     border-radius: 0.5rem;
 }
 
+.card {
+    border: none;
+}
+
 .card-body {
     background-color: var(--secondary-color);
-    border: 1px solid var(--primary-color);
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#rdy-to-cook {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.custom-link-hero {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    font-size: 1.25rem;
+}
+
+.custom-link-hero:hover {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.hero-icon {
+    color: var(--primary-color);
 }
 
 /* Media tags */
