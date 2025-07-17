@@ -1,0 +1,2 @@
+Command and info for adding random recipes for testing is credited to Claude AI: load_sample_recipes.py
+
