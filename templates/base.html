@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Auntie's Cookbook{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <!-- Mobile Navbar (visible only on small screens) -->
+    <nav class="navbar bg-body-tertiary fixed-top mobile-navbar d-md-none">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-utensils me-2"></i>
+                Auntie's Cookbook
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Offcanvas for mobile -->
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+                <i class="fas fa-utensils me-2"></i>
+                Auntie's Cookbook
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">
+                        <i class="fas fa-home me-2"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-list me-2"></i>Recipe List
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-plus me-2"></i>Add Recipe
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-user-plus me-2"></i>Sign Up
+                    </a>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+
+    <!-- Sidebar for medium+ screens -->
+    <div class="sidebar d-none d-md-block">
+        <div class="mb-4">
+            <h4 class="mb-3">
+                <a class="nav-link" href="{% url 'home'%}">
+                    <i class="fas fa-utensils me-2"></i>
+                    Auntie's Cookbook
+                </a>
+            </h4>
+        </div>
+
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{% url 'home' %}">
+                    <i class="fas fa-home me-2"></i>Home
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-list me-2"></i>Recipe List
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-plus me-2"></i>Add Recipe
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-heart me-2"></i>Favorites
+                </a>
+            </li>
+        </ul>
+
+        <hr>
+
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-user-plus me-2"></i>Sign Up
+                </a>
+            </li>
+        </ul>
+
+
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid py-4">
+            <!-- Messages -->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

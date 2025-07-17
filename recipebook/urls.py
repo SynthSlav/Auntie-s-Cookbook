@@ -17,9 +17,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from recipes.views import index
+from . import views
 
 urlpatterns = [
-    path("index/", index, name="index"),  # URL for the index view
     path("admin/", admin.site.urls),
+    path("", views.home, name="home"),  # URL for the home view
 ]
