@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_summernote",  # For rich text editing
     "recipes",  # First app for the recipebook project
 ]
 
