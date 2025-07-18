@@ -10,8 +10,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Get or create a default user
         user, created = User.objects.get_or_create(
-            username="chef_test",
-            defaults={"email": "chef@example.com", "is_staff": True},
+            username="test_chef",
+            defaults={"email": "test_chef@example.com", "is_staff": True},
         )
         if created:
             user.set_password("testpassword")
@@ -41,9 +41,9 @@ class Command(BaseCommand):
                     {"name": "brown sugar", "quantity": 0.75, "unit": "cup"},
                     {"name": "white sugar", "quantity": 0.75, "unit": "cup"},
                     {"name": "eggs", "quantity": 2, "unit": "piece"},
-                    {"name": "vanilla extract", "quantity": 2, "unit": "tsp"},
-                    {"name": "baking soda", "quantity": 1, "unit": "tsp"},
-                    {"name": "salt", "quantity": 1, "unit": "tsp"},
+                    {"name": "vanilla extract", "quantity": 2, "unit": "teaspoon"},
+                    {"name": "baking soda", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "salt", "quantity": 1, "unit": "teaspoon"},
                     {"name": "chocolate chips", "quantity": 2, "unit": "cup"},
                 ],
             },
@@ -62,7 +62,7 @@ class Command(BaseCommand):
                     {
                         "name": "chicken breast",
                         "quantity": 1,
-                        "unit": "lb",
+                        "unit": "kilogram",
                         "notes": "boneless, skinless",
                     },
                     {
@@ -89,9 +89,9 @@ class Command(BaseCommand):
                         "unit": "clove",
                         "notes": "minced",
                     },
-                    {"name": "soy sauce", "quantity": 3, "unit": "tbsp"},
-                    {"name": "vegetable oil", "quantity": 2, "unit": "tbsp"},
-                    {"name": "sesame oil", "quantity": 1, "unit": "tsp"},
+                    {"name": "soy sauce", "quantity": 3, "unit": "tablespoon"},
+                    {"name": "vegetable oil", "quantity": 2, "unit": "tablespoon"},
+                    {"name": "sesame oil", "quantity": 1, "unit": "teaspoon"},
                 ],
             },
             {
@@ -113,9 +113,9 @@ class Command(BaseCommand):
                         "unit": "piece",
                         "notes": "ripe",
                     },
-                    {"name": "lime juice", "quantity": 1, "unit": "tbsp"},
-                    {"name": "salt", "quantity": 0.25, "unit": "tsp"},
-                    {"name": "black pepper", "quantity": 0.125, "unit": "tsp"},
+                    {"name": "lime juice", "quantity": 1, "unit": "tablespoon"},
+                    {"name": "salt", "quantity": 0.25, "unit": "teaspoon"},
+                    {"name": "black pepper", "quantity": 0.125, "unit": "teaspoon"},
                     {
                         "name": "cherry tomatoes",
                         "quantity": 4,
@@ -136,10 +136,10 @@ class Command(BaseCommand):
                 "prep_instructions": "Prepare all toppings. Heat taco shells.",
                 "cook_instructions": "Brown ground beef. Add seasonings and simmer. Assemble tacos.",
                 "ingredients": [
-                    {"name": "ground beef", "quantity": 1, "unit": "lb"},
+                    {"name": "ground beef", "quantity": 1, "unit": "kilogram"},
                     {"name": "taco shells", "quantity": 12, "unit": "piece"},
                     {"name": "onion", "quantity": 1, "unit": "piece", "notes": "diced"},
-                    {"name": "taco seasoning", "quantity": 1, "unit": "oz"},
+                    {"name": "taco seasoning", "quantity": 1, "unit": "piece"},
                     {
                         "name": "lettuce",
                         "quantity": 2,
@@ -187,9 +187,9 @@ class Command(BaseCommand):
                         "notes": "cooked",
                     },
                     {"name": "kale", "quantity": 4, "unit": "cup", "notes": "massaged"},
-                    {"name": "tahini", "quantity": 3, "unit": "tbsp"},
-                    {"name": "lemon juice", "quantity": 2, "unit": "tbsp"},
-                    {"name": "olive oil", "quantity": 2, "unit": "tbsp"},
+                    {"name": "tahini", "quantity": 3, "unit": "tablespoon"},
+                    {"name": "lemon juice", "quantity": 2, "unit": "tablespoon"},
+                    {"name": "olive oil", "quantity": 2, "unit": "tablespoon"},
                     {
                         "name": "garlic",
                         "quantity": 2,
@@ -211,15 +211,15 @@ class Command(BaseCommand):
                 "cook_instructions": "Combine wet and dry ingredients. Cook on griddle until bubbles form.",
                 "ingredients": [
                     {"name": "all-purpose flour", "quantity": 1.5, "unit": "cup"},
-                    {"name": "sugar", "quantity": 3, "unit": "tbsp"},
-                    {"name": "baking powder", "quantity": 2, "unit": "tsp"},
-                    {"name": "salt", "quantity": 0.5, "unit": "tsp"},
+                    {"name": "sugar", "quantity": 3, "unit": "tablespoon"},
+                    {"name": "baking powder", "quantity": 2, "unit": "teaspoon"},
+                    {"name": "salt", "quantity": 0.5, "unit": "teaspoon"},
                     {"name": "milk", "quantity": 1.25, "unit": "cup"},
                     {"name": "egg", "quantity": 1, "unit": "piece"},
                     {
                         "name": "butter",
                         "quantity": 3,
-                        "unit": "tbsp",
+                        "unit": "tablespoon",
                         "notes": "melted",
                     },
                 ],
@@ -255,14 +255,14 @@ class Command(BaseCommand):
                         "notes": "cubed for croutons",
                     },
                     {"name": "mayonnaise", "quantity": 0.5, "unit": "cup"},
-                    {"name": "lemon juice", "quantity": 2, "unit": "tbsp"},
+                    {"name": "lemon juice", "quantity": 2, "unit": "tablespoon"},
                     {
                         "name": "garlic",
                         "quantity": 2,
                         "unit": "clove",
                         "notes": "minced",
                     },
-                    {"name": "anchovy paste", "quantity": 1, "unit": "tsp"},
+                    {"name": "anchovy paste", "quantity": 1, "unit": "teaspoon"},
                 ],
             },
             {
@@ -277,8 +277,13 @@ class Command(BaseCommand):
                 "prep_instructions": "Cook pasta. Whisk eggs with cheese. Prepare pancetta.",
                 "cook_instructions": "Cook pancetta until crispy. Toss hot pasta with egg mixture.",
                 "ingredients": [
-                    {"name": "spaghetti", "quantity": 1, "unit": "lb"},
-                    {"name": "pancetta", "quantity": 6, "unit": "oz", "notes": "diced"},
+                    {"name": "spaghetti", "quantity": 1, "unit": "kilogram"},
+                    {
+                        "name": "pancetta",
+                        "quantity": 6,
+                        "unit": "piece",
+                        "notes": "diced",
+                    },
                     {"name": "eggs", "quantity": 4, "unit": "piece"},
                     {
                         "name": "parmesan cheese",
@@ -289,10 +294,10 @@ class Command(BaseCommand):
                     {
                         "name": "black pepper",
                         "quantity": 1,
-                        "unit": "tsp",
+                        "unit": "teaspoon",
                         "notes": "freshly ground",
                     },
-                    {"name": "salt", "quantity": 0.5, "unit": "tsp"},
+                    {"name": "salt", "quantity": 0.5, "unit": "teaspoon"},
                 ],
             },
             {
@@ -310,12 +315,12 @@ class Command(BaseCommand):
                     {"name": "all-purpose flour", "quantity": 1.75, "unit": "cup"},
                     {"name": "cocoa powder", "quantity": 0.25, "unit": "cup"},
                     {"name": "sugar", "quantity": 0.75, "unit": "cup"},
-                    {"name": "baking powder", "quantity": 2, "unit": "tsp"},
-                    {"name": "salt", "quantity": 0.5, "unit": "tsp"},
+                    {"name": "baking powder", "quantity": 2, "unit": "teaspoon"},
+                    {"name": "salt", "quantity": 0.5, "unit": "teaspoon"},
                     {"name": "milk", "quantity": 1, "unit": "cup"},
                     {"name": "vegetable oil", "quantity": 0.33, "unit": "cup"},
                     {"name": "egg", "quantity": 1, "unit": "piece"},
-                    {"name": "vanilla extract", "quantity": 1, "unit": "tsp"},
+                    {"name": "vanilla extract", "quantity": 1, "unit": "teaspoon"},
                 ],
             },
             {
@@ -351,13 +356,18 @@ class Command(BaseCommand):
                     {
                         "name": "feta cheese",
                         "quantity": 6,
-                        "unit": "oz",
+                        "unit": "piece",
                         "notes": "cubed",
                     },
                     {"name": "kalamata olives", "quantity": 0.5, "unit": "cup"},
                     {"name": "olive oil", "quantity": 0.25, "unit": "cup"},
-                    {"name": "lemon juice", "quantity": 2, "unit": "tbsp"},
-                    {"name": "oregano", "quantity": 1, "unit": "tsp", "notes": "dried"},
+                    {"name": "lemon juice", "quantity": 2, "unit": "tablespoon"},
+                    {
+                        "name": "oregano",
+                        "quantity": 1,
+                        "unit": "teaspoon",
+                        "notes": "dried",
+                    },
                 ],
             },
             {
@@ -386,9 +396,9 @@ class Command(BaseCommand):
                     },
                     {"name": "sugar", "quantity": 0.75, "unit": "cup"},
                     {"name": "egg", "quantity": 1, "unit": "piece", "notes": "beaten"},
-                    {"name": "vanilla extract", "quantity": 1, "unit": "tsp"},
-                    {"name": "baking soda", "quantity": 1, "unit": "tsp"},
-                    {"name": "salt", "quantity": 0.25, "unit": "tsp"},
+                    {"name": "vanilla extract", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "baking soda", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "salt", "quantity": 0.25, "unit": "teaspoon"},
                     {"name": "all-purpose flour", "quantity": 1.5, "unit": "cup"},
                 ],
             },
@@ -407,7 +417,7 @@ class Command(BaseCommand):
                     {
                         "name": "chicken breast",
                         "quantity": 1,
-                        "unit": "lb",
+                        "unit": "kilogram",
                         "notes": "cubed",
                     },
                     {
@@ -425,9 +435,14 @@ class Command(BaseCommand):
                     {"name": "onion", "quantity": 1, "unit": "piece", "notes": "diced"},
                     {"name": "chicken broth", "quantity": 6, "unit": "cup"},
                     {"name": "egg noodles", "quantity": 2, "unit": "cup"},
-                    {"name": "thyme", "quantity": 1, "unit": "tsp", "notes": "dried"},
-                    {"name": "salt", "quantity": 1, "unit": "tsp"},
-                    {"name": "black pepper", "quantity": 0.5, "unit": "tsp"},
+                    {
+                        "name": "thyme",
+                        "quantity": 1,
+                        "unit": "teaspoon",
+                        "notes": "dried",
+                    },
+                    {"name": "salt", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "black pepper", "quantity": 0.5, "unit": "teaspoon"},
                 ],
             },
             {
@@ -468,9 +483,9 @@ class Command(BaseCommand):
                         "notes": "minced",
                     },
                     {"name": "egg", "quantity": 1, "unit": "piece"},
-                    {"name": "cumin", "quantity": 1, "unit": "tsp"},
-                    {"name": "paprika", "quantity": 0.5, "unit": "tsp"},
-                    {"name": "salt", "quantity": 0.5, "unit": "tsp"},
+                    {"name": "cumin", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "paprika", "quantity": 0.5, "unit": "teaspoon"},
+                    {"name": "salt", "quantity": 0.5, "unit": "teaspoon"},
                 ],
             },
             {
@@ -492,16 +507,21 @@ class Command(BaseCommand):
                         "notes": "Granny Smith, peeled and sliced",
                     },
                     {"name": "sugar", "quantity": 0.75, "unit": "cup"},
-                    {"name": "flour", "quantity": 2, "unit": "tbsp"},
-                    {"name": "cinnamon", "quantity": 1, "unit": "tsp"},
-                    {"name": "nutmeg", "quantity": 0.25, "unit": "tsp"},
+                    {"name": "flour", "quantity": 2, "unit": "tablespoon"},
+                    {"name": "cinnamon", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "nutmeg", "quantity": 0.25, "unit": "teaspoon"},
                     {
                         "name": "pie crust",
                         "quantity": 2,
                         "unit": "piece",
                         "notes": "homemade or store-bought",
                     },
-                    {"name": "butter", "quantity": 2, "unit": "tbsp", "notes": "cubed"},
+                    {
+                        "name": "butter",
+                        "quantity": 2,
+                        "unit": "tablespoon",
+                        "notes": "cubed",
+                    },
                     {
                         "name": "egg",
                         "quantity": 1,
@@ -525,10 +545,10 @@ class Command(BaseCommand):
                     {
                         "name": "shrimp",
                         "quantity": 1,
-                        "unit": "lb",
+                        "unit": "kilogram",
                         "notes": "peeled and deveined",
                     },
-                    {"name": "linguine", "quantity": 12, "unit": "oz"},
+                    {"name": "linguine", "quantity": 12, "unit": "piece"},
                     {
                         "name": "garlic",
                         "quantity": 4,
@@ -536,16 +556,16 @@ class Command(BaseCommand):
                         "notes": "minced",
                     },
                     {"name": "white wine", "quantity": 0.5, "unit": "cup"},
-                    {"name": "butter", "quantity": 4, "unit": "tbsp"},
-                    {"name": "olive oil", "quantity": 2, "unit": "tbsp"},
+                    {"name": "butter", "quantity": 4, "unit": "tablespoon"},
+                    {"name": "olive oil", "quantity": 2, "unit": "tablespoon"},
                     {
                         "name": "parsley",
                         "quantity": 0.25,
                         "unit": "cup",
                         "notes": "chopped",
                     },
-                    {"name": "red pepper flakes", "quantity": 0.25, "unit": "tsp"},
-                    {"name": "lemon juice", "quantity": 2, "unit": "tbsp"},
+                    {"name": "red pepper flakes", "quantity": 0.25, "unit": "teaspoon"},
+                    {"name": "lemon juice", "quantity": 2, "unit": "tablespoon"},
                 ],
             },
             {
@@ -569,8 +589,8 @@ class Command(BaseCommand):
                     },
                     {"name": "almond milk", "quantity": 0.5, "unit": "cup"},
                     {"name": "granola", "quantity": 0.25, "unit": "cup"},
-                    {"name": "chia seeds", "quantity": 1, "unit": "tbsp"},
-                    {"name": "coconut flakes", "quantity": 2, "unit": "tbsp"},
+                    {"name": "chia seeds", "quantity": 1, "unit": "tablespoon"},
+                    {"name": "coconut flakes", "quantity": 2, "unit": "tablespoon"},
                     {
                         "name": "fresh berries",
                         "quantity": 0.5,
@@ -594,7 +614,7 @@ class Command(BaseCommand):
                     {
                         "name": "beef chuck",
                         "quantity": 2,
-                        "unit": "lb",
+                        "unit": "kilogram",
                         "notes": "cut into chunks",
                     },
                     {
@@ -611,13 +631,18 @@ class Command(BaseCommand):
                     },
                     {"name": "onion", "quantity": 1, "unit": "piece", "notes": "diced"},
                     {"name": "beef broth", "quantity": 4, "unit": "cup"},
-                    {"name": "tomato paste", "quantity": 2, "unit": "tbsp"},
-                    {"name": "thyme", "quantity": 1, "unit": "tsp", "notes": "dried"},
+                    {"name": "tomato paste", "quantity": 2, "unit": "tablespoon"},
+                    {
+                        "name": "thyme",
+                        "quantity": 1,
+                        "unit": "teaspoon",
+                        "notes": "dried",
+                    },
                     {"name": "bay leaves", "quantity": 2, "unit": "piece"},
                     {
                         "name": "flour",
                         "quantity": 2,
-                        "unit": "tbsp",
+                        "unit": "tablespoon",
                         "notes": "for thickening",
                     },
                 ],
@@ -637,7 +662,7 @@ class Command(BaseCommand):
                     {
                         "name": "fresh mozzarella",
                         "quantity": 8,
-                        "unit": "oz",
+                        "unit": "piece",
                         "notes": "sliced",
                     },
                     {
@@ -652,10 +677,14 @@ class Command(BaseCommand):
                         "unit": "piece",
                         "notes": "leaves",
                     },
-                    {"name": "extra virgin olive oil", "quantity": 2, "unit": "tbsp"},
-                    {"name": "balsamic vinegar", "quantity": 1, "unit": "tbsp"},
-                    {"name": "salt", "quantity": 0.25, "unit": "tsp"},
-                    {"name": "black pepper", "quantity": 0.125, "unit": "tsp"},
+                    {
+                        "name": "extra virgin olive oil",
+                        "quantity": 2,
+                        "unit": "tablespoon",
+                    },
+                    {"name": "balsamic vinegar", "quantity": 1, "unit": "tablespoon"},
+                    {"name": "salt", "quantity": 0.25, "unit": "teaspoon"},
+                    {"name": "black pepper", "quantity": 0.125, "unit": "teaspoon"},
                 ],
             },
             {
@@ -673,7 +702,7 @@ class Command(BaseCommand):
                     {
                         "name": "white fish fillets",
                         "quantity": 1,
-                        "unit": "lb",
+                        "unit": "kilogram",
                         "notes": "mahi-mahi or tilapia",
                     },
                     {"name": "corn tortillas", "quantity": 8, "unit": "piece"},
@@ -691,8 +720,8 @@ class Command(BaseCommand):
                         "unit": "cup",
                         "notes": "chopped",
                     },
-                    {"name": "cumin", "quantity": 1, "unit": "tsp"},
-                    {"name": "chili powder", "quantity": 0.5, "unit": "tsp"},
+                    {"name": "cumin", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "chili powder", "quantity": 0.5, "unit": "teaspoon"},
                 ],
             },
             {
@@ -717,10 +746,10 @@ class Command(BaseCommand):
                         "notes": "softened",
                     },
                     {"name": "egg", "quantity": 1, "unit": "piece"},
-                    {"name": "vanilla extract", "quantity": 1, "unit": "tsp"},
-                    {"name": "cinnamon", "quantity": 0.5, "unit": "tsp"},
-                    {"name": "baking soda", "quantity": 0.5, "unit": "tsp"},
-                    {"name": "salt", "quantity": 0.25, "unit": "tsp"},
+                    {"name": "vanilla extract", "quantity": 1, "unit": "teaspoon"},
+                    {"name": "cinnamon", "quantity": 0.5, "unit": "teaspoon"},
+                    {"name": "baking soda", "quantity": 0.5, "unit": "teaspoon"},
+                    {"name": "salt", "quantity": 0.25, "unit": "teaspoon"},
                     {"name": "raisins", "quantity": 0.5, "unit": "cup"},
                 ],
             },
@@ -745,10 +774,15 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(f"Created recipe: {recipe.title}")
 
-                # Add ingredients
+                # Add ingredients with proper field mapping
                 for i, ingredient_data in enumerate(ingredients_data):
                     Ingredient.objects.create(
-                        recipe=recipe, order=i + 1, **ingredient_data
+                        recipe=recipe,
+                        ingredient_name=ingredient_data["name"],
+                        quantity=ingredient_data.get("quantity"),
+                        unit=ingredient_data.get("unit", ""),
+                        notes=ingredient_data.get("notes", ""),
+                        order=i + 1,
                     )
                 self.stdout.write(f"  Added {len(ingredients_data)} ingredients")
             else:
