@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Recipes - Auntie's Cookbook{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="display-5 mb-2">All Recipes</h1>
+                <p class="text-muted">Discover {{ recipes.count }} delicious recipes</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <!-- Filter Button -->
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                    <i class="fas fa-filter me-1"></i>Filter
+                </button>
+
+                <!-- Add Recipe Button -->
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-plus me-1 d-none d-sm-inline"></i>
+                    <span class="d-none d-sm-inline">Add Recipe</span>
+                    <i class="fas fa-plus d-sm-none"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
