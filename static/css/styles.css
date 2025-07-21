@@ -148,9 +148,9 @@ h6 {
     position: relative;
 }
 
-.recipe-card:hover {
+#item-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .recipe-card:hover .recipe-actions {
@@ -191,17 +191,17 @@ h6 {
 
 /* Difficulty Badges */
 .difficulty-easy {
-    background-color: #28a745 !important;
+    background-color: #28a745;
     color: white;
 }
 
 .difficulty-medium {
-    background-color: #ffc107 !important;
+    background-color: #ffc107;
     color: #212529;
 }
 
 .difficulty-hard {
-    background-color: #dc3545 !important;
+    background-color: #dc3545;
     color: white;
 }
 
@@ -210,10 +210,6 @@ h6 {
     font-size: 0.75rem;
 }
 
-/* View Toggle Buttons */
-.btn-group .btn {
-    min-width: 45px;
-}
 
 /* Filter Tags */
 .filter-tag {
