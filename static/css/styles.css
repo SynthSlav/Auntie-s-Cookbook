@@ -21,6 +21,29 @@ h6 {
     color: var(--primary-color);
 }
 
+/* Custom Button Styling */
+.custom-btn {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.custom-btn:hover {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.custom-btn-outline {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.custom-btn-outline:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
 /* Nav-link styling */
 .nav-link {
     color: var(--accent-color);
@@ -113,32 +136,6 @@ h6 {
     color: var(--primary-color);
 }
 
-/* Media tags */
-/* Sidebar for medium screens and up */
-@media (min-width: 768px) {
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        width: 15.625rem;
-        background-color: var(--primary-color);
-        color: var(--accent-color);
-        border-right: 1px solid #dee2e6;
-        padding: 1rem;
-        z-index: 1000;
-    }
-
-    .main-content {
-        margin-left: 15.625rem;
-        padding-top: 2rem;
-    }
-
-    .mobile-navbar {
-        display: none;
-    }
-}
-
 /* Recipe List Styles */
 
 /* Recipe Cards */
@@ -150,7 +147,7 @@ h6 {
 
 #item-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
 }
 
 .recipe-card:hover .recipe-actions {
@@ -237,7 +234,49 @@ h6 {
     color: #dc3545;
 }
 
+/* Form Input Styling */
 
+#filterModal .form-check-input:checked {
+    accent-color: var(--primary-color);
+    background-color: var(--accent-color);
+    border-color: var(--primary-color);
+}
+
+#filterModal .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#filterModal .modal-content {
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+
+/* Media tags */
+/* Sidebar for medium screens and up */
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 15.625rem;
+        background-color: var(--primary-color);
+        color: var(--accent-color);
+        border-right: 1px solid #dee2e6;
+        padding: 1rem;
+        z-index: 1000;
+    }
+
+    .main-content {
+        margin-left: 15.625rem;
+        padding-top: 2rem;
+    }
+
+    .mobile-navbar {
+        display: none;
+    }
+}
 
 /* Hide sidebar on small screens */
 @media (max-width: 767px) {

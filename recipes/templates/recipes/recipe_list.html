@@ -15,12 +15,12 @@
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <!-- Filter Button -->
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <button class="btn custom-btn-outline" data-bs-toggle="modal" data-bs-target="#filterModal">
                     <i class="fas fa-filter me-1"></i>Filter
                 </button>
 
                 <!-- Add Recipe Button -->
-                <a href="#" class="btn btn-primary">
+                <a href="#" class="btn custom-btn">
                     <i class="fas fa-plus me-1 d-none d-sm-inline"></i>
                     <span class="d-none d-sm-inline">Add Recipe</span>
                     <i class="fas fa-plus d-sm-none"></i>
@@ -122,12 +122,139 @@
         {% endfor %}
     </div>
 </div>
-<!-- Filter Modal - KEEP THIS -->
+<!-- Filter Modal -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal header, body, footer - all good as-is -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">
+                    <i class="fas fa-filter me-2"></i>Filter Recipes
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Meal Type Filter -->
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Meal Type</h6>
+                    <div class="row">
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="breakfast" id="meal-breakfast">
+                                <label class="form-check-label" for="meal-breakfast">Breakfast</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="lunch" id="meal-lunch">
+                                <label class="form-check-label" for="meal-lunch">Lunch</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="dinner" id="meal-dinner">
+                                <label class="form-check-label" for="meal-dinner">Dinner</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="snack" id="meal-snack">
+                                <label class="form-check-label" for="meal-snack">Snack</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="dessert" id="meal-dessert">
+                                <label class="form-check-label" for="meal-dessert">Dessert</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="appetizer" id="meal-appetizer">
+                                <label class="form-check-label" for="meal-appetizer">Appetizer</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Difficulty Filter -->
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Difficulty</h6>
+                    <div class="row">
+                        <div class="col-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="easy" id="diff-easy">
+                                <label class="form-check-label" for="diff-easy">Easy</label>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="medium" id="diff-medium">
+                                <label class="form-check-label" for="diff-medium">Medium</label>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="hard" id="diff-hard">
+                                <label class="form-check-label" for="diff-hard">Hard</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dietary Restrictions Filter -->
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Dietary Restrictions</h6>
+                    <div class="row">
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="vegetarian" id="diet-vegetarian">
+                                <label class="form-check-label" for="diet-vegetarian">Vegetarian</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="vegan" id="diet-vegan">
+                                <label class="form-check-label" for="diet-vegan">Vegan</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="gluten_free" id="diet-gluten">
+                                <label class="form-check-label" for="diet-gluten">Gluten Free</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="dairy_free" id="diet-dairy">
+                                <label class="form-check-label" for="diet-dairy">Dairy Free</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="keto" id="diet-keto">
+                                <label class="form-check-label" for="diet-keto">Keto</label>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="paleo" id="diet-paleo">
+                                <label class="form-check-label" for="diet-paleo">Paleo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="clearFilters">Clear All</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="applyFilters" data-bs-dismiss="modal">Apply
+                    Filters</button>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
