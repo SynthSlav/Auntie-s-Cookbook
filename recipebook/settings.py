@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_summernote",  # For rich text editing
+    "widget_tweaks",  # For customizing form widgets
     "recipes",  # First app for the recipebook project
 ]
 
@@ -135,3 +136,19 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Authentication settings
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "home"  # Redirect after successful login
+LOGOUT_REDIRECT_URL = "home"  # Redirect after logout
+
+# Message tags for Bootstrap styling
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
+}

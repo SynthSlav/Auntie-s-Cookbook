@@ -8,7 +8,7 @@
     <!-- Back Button -->
     <div class="row mb-3">
         <div class="col-12">
-            <a href="{% url 'recipe_list' %}" class="btn btn-outline-secondary">
+            <a href="{% url 'recipe_list' %}" class="btn custom-btn">
                 <i class="fas fa-arrow-left me-2"></i>Back to All Recipes
             </a>
         </div>
@@ -184,7 +184,7 @@
                 <!-- Prep Instructions -->
                 {% if recipe.prep_instructions %}
                 <div class="card shadow-sm mb-3">
-                    <div class="card-header ">
+                    <div class="card-header">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-clock icon-recipe-detail me-2"></i>
                             Preparation ({{ recipe.prep_time }} minutes)
