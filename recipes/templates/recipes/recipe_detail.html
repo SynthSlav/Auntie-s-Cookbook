@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ recipe.title }} - Auntie's Cookbook{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Back Button -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <a href="{% url 'recipe_list' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Back to All Recipes
+            </a>
+        </div>
+    </div>
+
+    <!-- Recipe Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                <div>
+                    <h1 class="display-5 mb-2">{{ recipe.title }}</h1>
+                    <p class="lead text-muted">{{ recipe.description }}</p>
+
+                    <!-- Recipe Meta Info -->
+                    <div class="d-flex gap-3 flex-wrap mb-3">
+                        <span class="badge bg-primary fs-6">{{ recipe.get_meal_type_display }}</span>
+                        <span class="badge difficulty-{{ recipe.difficulty }} fs-6">
+                            {{ recipe.get_difficulty_display }}
+                        </span>
+                        {% if recipe.dietary_restrictions != 'none' %}
+                        <span class="badge bg-info fs-6">{{ recipe.get_dietary_restrictions_display }}</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Recipe Stats -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-clock me-2 icon-recipe-detail"></i>
+                                <div>
+                                    <small class="text-muted d-block">Total Time</small>
+                                    <strong>{{ recipe.total_time }} minutes</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-users icon-recipe-detail me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Servings</small>
+                                    <strong>{{ recipe.servings }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user icon-recipe-detail me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Created by</small>
+                                    <strong>{{ recipe.author.username }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-warning">
+                        <i class="fas fa-edit me-1"></i>
+                        <span class="d-none d-sm-inline">Edit Recipe</span>
+                    </button>
+                    <button class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        <span class="d-none d-sm-inline">Delete</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="far fa-heart me-1"></i>
+                        <span class="d-none d-sm-inline">Favorite</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recipe Image -->
+        <div class="col-lg-5 mb-4">
+            <div class="sticky-top" style="top: 2rem;">
+                <div class="recipe-image-container">
+                    {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid rounded shadow">
+                    {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center rounded shadow"
+                        style="height: 400px;">
+                        <i class="fas fa-utensils fa-5x text-muted"></i>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Quick Info Card -->
+                <div class="card mt-3 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title">Quick Info</h6>
+                        <div class="row g-2 text-center">
+                            <div class="col-4">
+                                <div class="p-2 bg-light rounded">
+                                    <i class="fas fa-clock icon-recipe-detail d-block mb-1"></i>
+                                    <small class="text-muted d-block">Prep</small>
+                                    <strong>{{ recipe.prep_time }}min</strong>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 bg-light rounded">
+                                    <i class="fas fa-fire icon-recipe-detail d-block mb-1"></i>
+                                    <small class="text-muted d-block">Cook</small>
+                                    <strong>{{ recipe.cook_time }}min</strong>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 bg-light rounded">
+                                    <i class="fas fa-users icon-recipe-detail d-block mb-1"></i>
+                                    <small class="text-muted d-block">Serves</small>
+                                    <strong>{{ recipe.servings }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Content -->
+        <div class="col-lg-7">
+            <!-- Ingredients Section -->
+            <div class="mb-5">
+                <h3 class="mb-3">
+                    <i class="fas fa-list icon-recipe-detail me-2"></i>
+                    Ingredients
+                </h3>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        {% if recipe.ingredients.all %}
+                        <ul class="list-unstyled mb-0">
+                            {% for ingredient in recipe.ingredients.all %}
+                            <li class="d-flex align-items-center mb-2 p-2 rounded hover-bg">
+                                <div class="form-check me-3">
+                                    <input class="form-check-input" type="checkbox"
+                                        id="ingredient-{{ forloop.counter }}">
+                                    <label class="form-check-label" for="ingredient-{{ forloop.counter }}"></label>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="ingredient-text">
+                                        {% if ingredient.quantity %}
+                                        <strong>{{ ingredient.quantity|floatformat:"-2" }}</strong>
+                                        {% endif %}
+                                        {% if ingredient.unit %}
+                                        <span class="text-muted">{{ ingredient.get_unit_display|lower }}</span>
+                                        {% endif %}
+                                        <span>{{ ingredient.ingredient_name }}</span>
+                                        {% if ingredient.notes %}
+                                        <small class="text-muted">({{ ingredient.notes }})</small>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p class="text-muted">No ingredients listed for this recipe.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions Section -->
+            <div class="mb-5">
+                <h3 class="mb-3">
+                    <i class="fas fa-clipboard-list icon-recipe-detail me-2"></i>
+                    Instructions
+                </h3>
+
+                <!-- Prep Instructions -->
+                {% if recipe.prep_instructions %}
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header ">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-clock icon-recipe-detail me-2"></i>
+                            Preparation ({{ recipe.prep_time }} minutes)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">{{ recipe.prep_instructions|linebreaks }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Cooking Instructions -->
+                {% if recipe.cook_instructions %}
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-fire icon-recipe-detail me-2"></i>
+                            Cooking ({{ recipe.cook_time }} minutes)
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">{{ recipe.cook_instructions|linebreaks }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Recipe Meta -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="card-title">Recipe Information</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Created</small>
+                            <span>{{ recipe.created_at|date:"F j, Y" }}</span>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted d-block">Last Updated</small>
+                            <span>{{ recipe.updated_at|date:"F j, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

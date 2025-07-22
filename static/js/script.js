@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Add Individual Filter Tag - IMPROVED MOBILE UX
+    // Add Individual Filter Tag 
     function addFilterTag(displayText, value) {
         if (!filterTagsDiv) return;
 
@@ -202,4 +202,82 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     console.log('Filter functionality initialized');
+
+    // Recipe Detail Page Features
+    // Check if the recipe detail page is loaded
+    if (document.querySelector('.recipe-image-container')) {
+        initializeRecipeDetailFeatures();
+    }
+
+    function initializeRecipeDetailFeatures() {
+        // Ingredient checkbox functionality
+        initializeIngredientCheckboxes();
+
+        // Action buttons (if you want to add functionality later)
+        initializeActionButtons();
+    }
+
+    function initializeIngredientCheckboxes() {
+        const checkboxes = document.querySelectorAll('.form-check-input');
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                const ingredientText = this.parentElement.nextElementSibling.querySelector('.ingredient-text');
+                updateIngredientStyle(checkbox, ingredientText);
+            });
+        });
+    }
+
+    function updateIngredientStyle(checkbox, ingredientText) {
+        if (checkbox.checked) {
+            ingredientText.style.textDecoration = 'line-through';
+            ingredientText.style.opacity = '0.6';
+        } else {
+            ingredientText.style.textDecoration = 'none';
+            ingredientText.style.opacity = '1';
+        }
+    }
+
+    function initializeActionButtons() {
+        // Edit Recipe Button
+        const editBtn = document.querySelector('.btn-outline-warning');
+        if (editBtn) {
+            editBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                console.log('Edit recipe clicked');
+            });
+        }
+
+        // Delete Recipe Button
+        const deleteBtn = document.querySelector('.btn-outline-danger');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to delete this recipe?')) {
+                    console.log('Delete recipe confirmed');
+                }
+            });
+        }
+
+        // Favorite Button
+        const favoriteBtn = document.querySelector('.btn-outline-primary');
+        if (favoriteBtn) {
+            favoriteBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('fas')) {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('btn-primary');
+                } else {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    this.classList.remove('btn-primary');
+                    this.classList.add('btn-outline-primary');
+                }
+                console.log('Favorite toggled');
+            });
+        }
+    }
 });

@@ -247,7 +247,7 @@ h6 {
     opacity: 1;
 }
 
-/* Clear All Button - Same styling */
+/* Clear All Button */
 #clearAllFilters {
     display: inline-flex;
     align-items: center;
@@ -290,8 +290,44 @@ h6 {
     color: var(--primary-color);
 }
 
+/* Recipe Detail Page Styles */
+
+.recipe-image-container img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.hover-bg:hover {
+    background-color: var(--bs-light);
+}
+
+.ingredient-text {
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+}
+
+.form-check-input:checked+.form-check-label+div .ingredient-text {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.icon-recipe-detail {
+    color: var(--primary-color);
+}
+
+
+
+
 /* Media tags */
 /* Sidebar for medium screens and up */
+@media (max-width: 991px) {
+    .sticky-top {
+        position: static !important;
+    }
+}
+
 @media (min-width: 768px) {
     .sidebar {
         position: fixed;
