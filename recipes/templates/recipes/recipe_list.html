@@ -30,6 +30,18 @@
     </div>
 </div>
 
+<div class="row mb-3" id="activeFilters" style="display: none;">
+    <div class="col-12">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <small class="text-muted">Active filters:</small>
+            <div id="filterTags"></div>
+            <button class="btn " id="clearAllFilters">
+                <small>Clear all filters</small>
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Recipe Container -->
 <div id="recipeContainer">
     <div class="row" id="recipeGrid">
@@ -88,7 +100,7 @@
 
                     <!-- Action Button -->
                     <div class="mt-auto">
-                        <a href="{{ recipe.get_absolute_url }}" class="btn btn-outline-primary w-100">
+                        <a href="{{ recipe.get_absolute_url }}" class="btn custom-btn w-100 stretched-link">
                             <i class="fas fa-eye me-2"></i>View Recipe
                         </a>
                     </div>
