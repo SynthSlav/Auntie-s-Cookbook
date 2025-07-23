@@ -57,16 +57,24 @@
                         <i class="fas fa-plus me-2"></i>Add Recipe
                     </a>
                 </li>
+                {% if not user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'login' %}">
                         <i class="fas fa-sign-in-alt me-2"></i>Login
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'signup' %}">
                         <i class="fas fa-user-plus me-2"></i>Sign Up
                     </a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </a>
+                </li>
+                {% endif %}
             </ul>
 
 
@@ -95,11 +103,19 @@
                     <i class="fas fa-list me-2"></i>All Recipes
                 </a>
             </li>
+            {% if user.is_authenticated %}
             <li class="nav-item mb-2">
                 <a class="nav-link" href="#">
                     <i class="fas fa-plus me-2"></i>Add Recipe
                 </a>
             </li>
+            {% else %}
+            <li class="nav-item mb-2">
+                <a class="nav-link disabled" href="#">
+                    <i class="fas fa-plus me-2"></i>Add Recipe
+                </a>
+            </li>
+            {% endif %}
             <li class="nav-item mb-2">
                 <a class="nav-link" href="#">
                     <i class="fas fa-heart me-2"></i>Favorites
@@ -110,16 +126,24 @@
         <hr>
 
         <ul class="nav nav-pills flex-column">
+            {% if not user.is_authenticated %}
             <li class="nav-item mb-2">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'login' %}">
                     <i class="fas fa-sign-in-alt me-2"></i>Login
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'signup' %}">
                     <i class="fas fa-user-plus me-2"></i>Sign Up
                 </a>
             </li>
+            {% else %}
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+            </li>
+            {% endif %}
         </ul>
 
 

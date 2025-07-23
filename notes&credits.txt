@@ -3,3 +3,5 @@ Command and info for adding random recipes for testing is credited to Claude AI:
 recipe.get_difficulty_display was not parsing the back end data due to Indentation issues.
 
 For form styling using the django userform template dependency django-widget-tweaks is used.
+
+next commit : 
