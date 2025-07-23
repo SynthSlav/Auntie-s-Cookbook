@@ -1,5 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Recipe
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils.text import slugify
+from .forms import RecipeForm
 
 # Create your views here.
 
@@ -12,3 +16,25 @@ def recipe_list(request):
 def recipe_detail(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
     return render(request, "recipes/recipe_detail.html", {"recipe": recipe})
+
+
+@login_required
+def add_recipe(request):
+    if request.method == "POST":
+        form = RecipeForm(request.POST)
+
+        if form.is_valid():
+            # Save the recipe with the current user as the author
+            recipe = form.save(commit=False)
+            recipe.author = request.user
+            recipe.slug = slugify(recipe.title)
+            recipe.save()
+
+            messages.success(request, "Recipe {recipe.title} added successfully!")
+            return redirect("recipe_detail", slug=recipe.slug)
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = RecipeForm()
+
+    return render(request, "recipes/add_recipe.html", {"form": form})

@@ -54,7 +54,7 @@
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'add_recipe' %}">
                         <i class="fas fa-plus me-2"></i>Add Recipe
                     </a>
                 </li>
@@ -113,7 +113,7 @@
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item mb-2">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'add_recipe' %}">
                     <i class="fas fa-plus me-2"></i>Add Recipe
                 </a>
             </li>
