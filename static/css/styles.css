@@ -389,3 +389,12 @@ h6 {
         /* Makes burger icon white */
     }
 }
+
+/* Action buttons always visible if user is author of recipe */
+@media (max-width: 767px) {
+    .recipe-card .recipe-actions {
+        opacity: 1;
+        visibility: visible;
+        transition: none;
+    }
+}

@@ -5,3 +5,8 @@ recipe.get_difficulty_display was not parsing the back end data due to Indentati
 For form styling using the django userform template dependency django-widget-tweaks is used.
 
 next commit : 
+
+
+
+TO DO:
+1. Change styles on input forms : checkbox in recipe details, login/signup form input

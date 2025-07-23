@@ -20,11 +20,19 @@
                 </button>
 
                 <!-- Add Recipe Button -->
+                {% if user.is_authenticated %}
                 <a href="#" class="btn custom-btn">
                     <i class="fas fa-plus me-1 d-none d-sm-inline"></i>
                     <span class="d-none d-sm-inline">Add Recipe</span>
                     <i class="fas fa-plus d-sm-none"></i>
                 </a>
+                {% else %}
+                <a href="{% url 'login_required_message' %}?feature=add a recipe" class="btn custom-btn text-muted">
+                    <i class="fas fa-plus me-1 d-none d-sm-inline text-muted"></i>
+                    <span class="d-none d-sm-inline">Add Recipe</span>
+                    <i class="fas fa-plus d-sm-none"></i>
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -107,6 +115,7 @@
                 </div>
 
                 <!-- Hover Actions -->
+                {% if user.is_authenticated and user == recipe.author %}
                 <div class="recipe-actions">
                     <div class="btn-group-vertical">
                         <a href="#" class="btn btn-sm btn-warning mb-1" title="Edit Recipe">
@@ -117,6 +126,7 @@
                         </button>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
         {% empty %}
