@@ -32,4 +32,7 @@ urlpatterns = [
         "logout/", auth_views.LogoutView.as_view(), name="logout"
     ),  # URL for the logout view
     path("signup/", views.signup_view, name="signup"),  # URL for the signup view
+    path(
+        "login-required/", views.login_required_message, name="login_required_message"
+    ),  # URL for login required message
 ]
