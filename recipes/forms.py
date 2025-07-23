@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recipe
+from .models import Recipe, Ingredient
 
 
 class RecipeForm(forms.ModelForm):
@@ -86,3 +86,37 @@ class RecipeForm(forms.ModelForm):
                 }
             ),
         }
+
+
+class IngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = ["ingredient_name", "quantity", "unit", "notes"]
+
+        widgets = {
+            "ingredient_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Ingredient name"}
+            ),
+            "quantity": forms.NumberInput(
+                attrs={
+                    "class": "form-control",
+                    "step": "0.25",
+                    "min": "0",
+                    "placeholder": "1",
+                }
+            ),
+            "unit": forms.Select(attrs={"class": "form-select"}),
+            "notes": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Optional notes"}
+            ),
+        }
+
+
+IngredientFormSet = forms.inlineformset_factory(
+    Recipe,
+    Ingredient,
+    form=IngredientForm,
+    extra=1,
+    can_delete=True,
+    can_delete_extra=True,
+)

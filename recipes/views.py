@@ -3,7 +3,7 @@ from .models import Recipe
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.text import slugify
-from .forms import RecipeForm
+from .forms import RecipeForm, IngredientFormSet
 
 # Create your views here.
 
@@ -21,20 +21,29 @@ def recipe_detail(request, slug):
 @login_required
 def add_recipe(request):
     if request.method == "POST":
-        form = RecipeForm(request.POST)
+        recipe_form = RecipeForm(request.POST)
+        ingredient_formset = IngredientFormSet(request.POST)
 
-        if form.is_valid():
+        if recipe_form.is_valid() and ingredient_formset.is_valid():
             # Save the recipe with the current user as the author
-            recipe = form.save(commit=False)
+            recipe = recipe_form.save(commit=False)
             recipe.author = request.user
             recipe.slug = slugify(recipe.title)
             recipe.save()
+
+            ingredient_formset.instance = recipe
+            ingredient_formset.save()
 
             messages.success(request, "Recipe {recipe.title} added successfully!")
             return redirect("recipe_detail", slug=recipe.slug)
         else:
             messages.error(request, "Please correct the errors below.")
     else:
-        form = RecipeForm()
+        recipe_form = RecipeForm()
+        ingredient_formset = ingredient_formset()
 
-    return render(request, "recipes/add_recipe.html", {"form": form})
+    return render(
+        request,
+        "recipes/add_recipe.html",
+        {"form": recipe_form, "ingredient_formset": ingredient_formset},
+    )
