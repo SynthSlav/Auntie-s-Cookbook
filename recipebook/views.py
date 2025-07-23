@@ -40,4 +40,5 @@ def login_required_message(request):
         request,
         f"You need to be logged in to {feature}. Please log in or sign up.",
     )
-    return redirect("login")  # Redirect to the login page
+    referer = request.META.get("HTTP_REFERER", "/")  # Get the referring URL
+    return redirect(referer)  # Redirect to the referring page
