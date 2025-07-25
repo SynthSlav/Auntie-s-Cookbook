@@ -4,6 +4,8 @@ recipe.get_difficulty_display was not parsing the back end data due to Indentati
 
 For form styling using the django userform template dependency django-widget-tweaks is used.
 
+- Dynamic ingredient management with animations - enhanced with AI assistance + form and view.
+
 next commit : 
 
 

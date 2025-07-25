@@ -12,8 +12,8 @@ class RecipeAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 
 
-# @admin.register(Ingredient)
-# class IngredientAdmin(admin.ModelAdmin):
-#     list_display = ("ingredient_name", "quantity", "unit", "recipe")
-#     list_filter = ("unit",)
-#     search_fields = ("ingredient_name",)
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ("ingredient_name", "quantity", "unit", "recipe")
+    list_filter = ("unit",)
+    search_fields = ("ingredient_name",)
