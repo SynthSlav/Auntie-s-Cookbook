@@ -242,7 +242,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
-
+            // Toggle favorite button
+            // This function toggles the favorite state of the recipe when the button is clicked
             const favoriteBtn = document.querySelector('.btn-outline-primary');
             if (favoriteBtn) {
                 favoriteBtn.addEventListener('click', function (e) {

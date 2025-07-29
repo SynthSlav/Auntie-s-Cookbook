@@ -12,3 +12,4 @@ next commit :
 
 TO DO:
 1. Change styles on input forms : checkbox in recipe details, login/signup form input
+2. Simplefy the ingrediends form, or add recipe form all together

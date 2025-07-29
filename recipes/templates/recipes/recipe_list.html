@@ -21,7 +21,7 @@
 
                 <!-- Add Recipe Button -->
                 {% if user.is_authenticated %}
-                <a href="#" class="btn custom-btn">
+                <a href="{% url 'add_recipe' %}" class="btn custom-btn">
                     <i class="fas fa-plus me-1 d-none d-sm-inline"></i>
                     <span class="d-none d-sm-inline">Add Recipe</span>
                     <i class="fas fa-plus d-sm-none"></i>
