@@ -67,10 +67,10 @@
 
                 <!-- Action Buttons -->
                 <div class="d-flex gap-2 flex-wrap">
-                    <button class="btn btn-warning">
+                    <a href="{% url 'edit_recipe' recipe.slug %}" class="btn btn-warning" title="Edit Recipe">
                         <i class="fas fa-edit me-1"></i>
                         <span class="d-none d-sm-inline">Edit Recipe</span>
-                    </button>
+                    </a>
                     <button class="btn btn-danger">
                         <i class="fas fa-trash me-1"></i>
                         <span class="d-none d-sm-inline">Delete</span>

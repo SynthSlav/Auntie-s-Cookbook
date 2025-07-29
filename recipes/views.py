@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.text import slugify
 from .forms import RecipeForm, IngredientFormSet
-from django.forms import formset_factory
+
 
 # Create your views here.
 
@@ -86,5 +86,75 @@ def add_recipe(request):
         {
             "recipe_form": recipe_form,
             "ingredient_formset": ingredient_formset,
+        },
+    )
+
+
+@login_required
+def edit_recipe(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug, author=request.user)
+
+    if request.method == "POST":
+        recipe_form = RecipeForm(request.POST, instance=recipe)
+        ingredient_formset = IngredientFormSet(
+            request.POST, instance=recipe, prefix="ingredients"
+        )
+
+        if recipe_form.is_valid() and ingredient_formset.is_valid():
+            try:
+                # Save the recipe
+                recipe = recipe_form.save(commit=False)
+
+                # Handle slug regeneration if title changed
+                if recipe_form.has_changed() and "title" in recipe_form.changed_data:
+                    base_slug = slugify(recipe.title)
+                    slug = base_slug
+                    counter = 1
+                    while (
+                        Recipe.objects.filter(slug=slug).exclude(id=recipe.id).exists()
+                    ):
+                        slug = f"{base_slug}-{counter}"
+                        counter += 1
+                    recipe.slug = slug
+
+                recipe.save()
+
+                # Save ingredients with proper ordering
+                ingredients = ingredient_formset.save(commit=False)
+                for i, ingredient in enumerate(ingredients):
+                    if ingredient.ingredient_name:
+                        ingredient.order = i + 1
+                        ingredient.save()
+
+                # Handle deleted ingredients
+                for ingredient in ingredient_formset.deleted_objects:
+                    ingredient.delete()
+
+                messages.success(
+                    request, f"Recipe '{recipe.title}' updated successfully!"
+                )
+                return redirect("recipe_detail", slug=recipe.slug)
+
+            except Exception as e:
+                messages.error(
+                    request,
+                    "Something went wrong while updating your recipe. Please try again.",
+                )
+        else:
+            if not recipe_form.is_valid():
+                messages.error(request, "Please fix the recipe details errors.")
+            if not ingredient_formset.is_valid():
+                messages.error(request, "Please fix the ingredients errors.")
+    else:
+        recipe_form = RecipeForm(instance=recipe)
+        ingredient_formset = IngredientFormSet(instance=recipe, prefix="ingredients")
+
+    return render(
+        request,
+        "recipes/edit_recipe.html",
+        {
+            "recipe_form": recipe_form,
+            "ingredient_formset": ingredient_formset,
+            "recipe": recipe,
         },
     )

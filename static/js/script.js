@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
         initializeRecipeDetailFeatures();
     }
 
-    // Add recipe form functionality
-    if (document.getElementById('add-recipe-form')) {
+    // Recipe form functionality
+    if (document.getElementById('edit-recipe-form') || document.getElementById('add-recipe-form')) {
         initializeAddRecipeForm();
     }
 
@@ -277,6 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalFormsInput = document.getElementById('id_ingredients-TOTAL_FORMS');
         const ingredientCount = document.getElementById('ingredient-count');
         const emptyMessage = document.getElementById('empty-ingredients');
+        const isEditPage = document.getElementById('edit-recipe-form');
 
         if (!addIngredientBtn || !ingredientFormsContainer || !totalFormsInput) {
             console.log('Add recipe form elements not found');
@@ -284,8 +285,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Clear any pre-filled data on page load
-        clearAllForms();
-
+        if (!isEditPage) {
+            clearAllForms();
+        }
         // Initialize
         updateIngredientCount();
         updateIngredientNumbers();
