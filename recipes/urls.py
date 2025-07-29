@@ -7,6 +7,9 @@ urlpatterns = [
         "add-recipe/", views.add_recipe, name="add_recipe"
     ),  # URL for adding a new recipe
     path(
+        "<slug:slug>/delete/", views.delete_recipe, name="delete_recipe"
+    ),  # URL for deleting a recipe
+    path(
         "<slug:slug>/edit/", views.edit_recipe, name="edit_recipe"
     ),  # URL for editing a recipe
     path(

@@ -498,7 +498,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Form validation
-        const form = document.getElementById('add-recipe-form');
+        const form = document.getElementById('add-recipe-form') || document.getElementById('edit-recipe-form');
+
+        if (!form) {
+            console.log('Form not found');
+            return;
+        }
         form.addEventListener('submit', function (e) {
             const submitBtn = form.querySelector('button[type="submit"]');
             const visibleForms = ingredientFormsContainer.querySelectorAll('.ingredient-form:not(.d-none)');

@@ -122,9 +122,13 @@
                             title="Edit Recipe">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button class="btn btn-sm btn-danger" title="Delete Recipe">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <form method="post" action="{% url 'delete_recipe' recipe.slug %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger" title="Delete Recipe"
+                                onclick="return confirm('Delete &quot;{{ recipe.title }}&quot;? This cannot be undone.')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 {% endif %}

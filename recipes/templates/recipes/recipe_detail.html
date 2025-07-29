@@ -66,15 +66,17 @@
                 </div>
 
                 <!-- Action Buttons -->
+                {% if user.is_authenticated and user == recipe.author %}
                 <div class="d-flex gap-2 flex-wrap">
                     <a href="{% url 'edit_recipe' recipe.slug %}" class="btn btn-warning" title="Edit Recipe">
                         <i class="fas fa-edit me-1"></i>
                         <span class="d-none d-sm-inline">Edit Recipe</span>
                     </a>
-                    <button class="btn btn-danger">
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
                         <i class="fas fa-trash me-1"></i>
                         <span class="d-none d-sm-inline">Delete</span>
                     </button>
+                    {% endif %}
                     <button class="btn btn-primary">
                         <i class="far fa-heart me-1"></i>
                         <span class="d-none d-sm-inline">Favorite</span>
@@ -227,6 +229,40 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-danger" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Delete Recipe
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <h6 class="mb-2">Are you sure you want to delete</h6>
+                <p class="fw-bold fs-5">"{{ recipe.title }}"?</p>
+                <div class="alert alert-warning d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <small>This action cannot be undone. The recipe and all its ingredients will be permanently
+                        removed.</small>
+                </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <form method="post" action="{% url 'delete_recipe' recipe.slug %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Yes, Delete Recipe
+                    </button>
+                </form>
             </div>
         </div>
     </div>

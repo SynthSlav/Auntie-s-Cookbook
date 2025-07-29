@@ -10,17 +10,22 @@ from .forms import RecipeForm, IngredientFormSet
 
 
 def recipe_list(request):
+    """Display a list of all recipes."""
+    # Fetch all recipes from the database
     recipes = Recipe.objects.all()
     return render(request, "recipes/recipe_list.html", {"recipes": recipes})
 
 
 def recipe_detail(request, slug):
+    """Display the details of a specific recipe."""
+    # Fetch the recipe by slug, or return a 404 if not found
     recipe = get_object_or_404(Recipe, slug=slug)
     return render(request, "recipes/recipe_detail.html", {"recipe": recipe})
 
 
 @login_required
 def add_recipe(request):
+    """Add a new recipe with ingredients."""
     if request.method == "POST":
         recipe_form = RecipeForm(request.POST)
         ingredient_formset = IngredientFormSet(request.POST, prefix="ingredients")
@@ -92,6 +97,7 @@ def add_recipe(request):
 
 @login_required
 def edit_recipe(request, slug):
+    """Edit an existing recipe if the user is the author."""
     recipe = get_object_or_404(Recipe, slug=slug, author=request.user)
 
     if request.method == "POST":
@@ -158,3 +164,18 @@ def edit_recipe(request, slug):
             "recipe": recipe,
         },
     )
+
+
+@login_required
+def delete_recipe(request, slug):
+    """Delete a recipe if the user is the author."""
+    recipe = get_object_or_404(Recipe, slug=slug, author=request.user)
+
+    # Confirm deletion
+    if request.method == "POST":
+        recipe_title = recipe.title
+        recipe.delete()
+        messages.success(request, f"Recipe '{recipe_title}' deleted successfully!")
+        return redirect("recipe_list")
+
+    return redirect("recipe_detail", slug=slug)
