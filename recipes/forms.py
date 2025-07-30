@@ -10,6 +10,7 @@ class RecipeForm(forms.ModelForm):
         fields = [
             "title",
             "description",
+            "recipe_image",
             "servings",
             "prep_time",
             "cook_time",
@@ -34,6 +35,12 @@ class RecipeForm(forms.ModelForm):
                     "placeholder": "Brief description of your recipe",
                     "rows": 3,
                     "required": True,
+                }
+            ),
+            "recipe_image": forms.ClearableFileInput(
+                attrs={
+                    "class": "form-control",
+                    "accept": "image/*",
                 }
             ),
             "servings": forms.NumberInput(

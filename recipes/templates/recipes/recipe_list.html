@@ -59,8 +59,8 @@
             <div id="item-card" class="card h-100 shadow-sm recipe-card">
                 <!-- Recipe Image -->
                 <div class="recipe-image">
-                    {% if recipe.image %}
-                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="card-img-top">
+                    {% if recipe.recipe_image %}
+                    <img src="{{ recipe.recipe_image.url }}" alt="{{ recipe.title }}" class="card-img-top">
                     {% else %}
                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
                         <i class="fas fa-utensils fa-3x text-muted"></i>

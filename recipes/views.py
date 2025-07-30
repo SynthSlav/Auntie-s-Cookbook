@@ -27,7 +27,7 @@ def recipe_detail(request, slug):
 def add_recipe(request):
     """Add a new recipe with ingredients."""
     if request.method == "POST":
-        recipe_form = RecipeForm(request.POST)
+        recipe_form = RecipeForm(request.POST, request.FILES)
         ingredient_formset = IngredientFormSet(request.POST, prefix="ingredients")
 
         if recipe_form.is_valid() and ingredient_formset.is_valid():
@@ -101,7 +101,7 @@ def edit_recipe(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug, author=request.user)
 
     if request.method == "POST":
-        recipe_form = RecipeForm(request.POST, instance=recipe)
+        recipe_form = RecipeForm(request.POST, request.FILES, instance=recipe)
         ingredient_formset = IngredientFormSet(
             request.POST, instance=recipe, prefix="ingredients"
         )

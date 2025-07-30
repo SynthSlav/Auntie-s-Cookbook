@@ -20,7 +20,8 @@
         </div>
     </div>
 
-    <form method="post" id="edit-recipe-form" action="{% url 'edit_recipe' recipe.slug %}" novalidate>
+    <form method="post" id="edit-recipe-form" enctype="multipart/form-data" action="{% url 'edit_recipe' recipe.slug %}"
+        novalidate>
         {% csrf_token %}
 
         <!-- Recipe Basic Info -->
@@ -50,6 +51,23 @@
                         {% if recipe_form.description.errors %}
                         <div class="text-danger mt-1 small">{{ recipe_form.description.errors.0 }}</div>
                         {% endif %}
+                    </div>
+                    <!-- Recipe Image -->
+                    <div class="col-12 mb-3">
+                        <label for="{{ recipe_form.recipe_image.id_for_label }}" class="form-label fw-bold">
+                            Recipe Image
+                        </label>
+                        {{ recipe_form.recipe_image }}
+                        {% if recipe_form.recipe_image.errors %}
+                        <div class="text-danger mt-1 small">{{ recipe_form.recipe_image.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Upload an image of your recipe (optional). Supported formats: JPG, PNG, GIF. Max size:
+                                10MB.
+                            </small>
+                        </div>
                     </div>
 
                     <!-- Time and Servings in a row -->
