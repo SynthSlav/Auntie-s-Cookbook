@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import cloudinary
+
+cloudinary.config(secure=True)
 
 if os.path.isfile("env.py"):
     import env
@@ -45,7 +48,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cloudinary_storage",  # For image storage and management
     "django_summernote",  # For rich text editing
+    "cloudinary",  # For handling media files with Cloudinary
     "widget_tweaks",  # For customizing form widgets
     "recipes",  # First app for the recipebook project
 ]
@@ -155,3 +160,6 @@ MESSAGE_TAGS = {
     messages.WARNING: "warning",
     messages.ERROR: "danger",
 }
+
+# Media files configuration for Cloudinary
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"

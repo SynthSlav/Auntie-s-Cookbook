@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -37,6 +38,11 @@ class Recipe(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes")
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
+    recipe_image = CloudinaryField(
+        "image",
+        null=True,
+        blank=True,
+    )
     description = models.TextField()
     servings = models.PositiveIntegerField(default=4, help_text="Number of servings")
     prep_time = models.PositiveIntegerField(help_text="Preparation time in minutes")

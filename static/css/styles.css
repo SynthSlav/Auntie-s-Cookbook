@@ -291,6 +291,11 @@ h6 {
     opacity: 0.6;
 }
 
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
 .icon-recipe-detail {
     color: var(--primary-color);
 }
@@ -447,6 +452,7 @@ h6 {
     border-radius: 20px;
     background: var(--primary-color) !important;
 }
+
 
 /* Top-to-bottom animations for ingredients */
 .ingredient-form {
@@ -644,6 +650,7 @@ h6 {
         visibility: visible;
         transition: none;
     }
+
 }
 
 @media (min-width: 768px) {
