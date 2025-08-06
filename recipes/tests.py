@@ -52,6 +52,22 @@ class RecipeModelTest(TestCase):
         recipe = Recipe.objects.create(**recipe_data)
         self.assertEqual(recipe.slug, "custom-slug")
 
+    def test_slug_generation_with_special_characters(self):
+        """Test YOUR slug logic with edge cases"""
+        recipe_data = self.recipe_data.copy()
+        recipe_data["title"] = "Mom's Best Recipe!"
+        recipe_data["slug"] = ""  # Auto generation of slug
+        recipe = Recipe.objects.create(**recipe_data)
+        self.assertEqual(recipe.slug, "mom's-best-recipe!")
+
+    def test_slug_generation_with_multiple_spaces(self):
+        """Test YOUR slug logic with multiple spaces"""
+        recipe_data = self.recipe_data.copy()
+        recipe_data["title"] = "Best   Ever   Recipe"
+        recipe_data["slug"] = ""
+        recipe = Recipe.objects.create(**recipe_data)
+        self.assertEqual(recipe.slug, "best---ever---recipe")
+
     def test_recipe_str_method(self):
         """Verify that string method works correctly"""
         recipe = Recipe.objects.create(**self.recipe_data)
@@ -108,6 +124,13 @@ class RecipeModelTest(TestCase):
         with self.assertRaises(ValidationError):
             recipe.full_clean()
 
+    def test_total_time_zero(self):
+        """Test total_time property edge cases"""
+        recipe = Recipe.objects.create(**self.recipe_data)
+        recipe.prep_time = 0
+        recipe.cook_time = 0
+        self.assertEqual(recipe.total_time, 0)
+
 
 class IngredientModelTest(TestCase):
     """Test cases for Ingredient model"""
@@ -155,3 +178,13 @@ class IngredientModelTest(TestCase):
             unit="cup",
         )
         self.assertEqual(str(ingredient), "2.5 cup Flour")
+
+    def test_ingredient_str_with_empty_unit(self):
+        """Test __str__ method with empty unit"""
+        ingredient = Ingredient.objects.create(
+            recipe=self.recipe,
+            ingredient_name="Eggs",
+            quantity=2,
+            unit="",  # Empty unit
+        )
+        self.assertEqual(str(ingredient), "2 Eggs")
