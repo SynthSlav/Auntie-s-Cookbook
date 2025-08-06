@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-
 from recipes.models import Recipe, Ingredient
 
 
@@ -45,3 +44,20 @@ class RecipeModelTest(TestCase):
 
         expected_slug = self.recipe_data["title"].lower().replace(" ", "-")
         self.assertEqual(recipe.slug, expected_slug)
+
+    def test_recipe_manual_slug(self):
+        """Test that slug can be set manually"""
+        recipe_data = self.recipe_data.copy()
+        recipe_data["slug"] = "custom-slug"
+        recipe = Recipe.objects.create(**recipe_data)
+        self.assertEqual(recipe.slug, "custom-slug")
+
+    def test_recipe_str_method(self):
+        """Verify that string method works correctly"""
+        recipe = Recipe.objects.create(**self.recipe_data)
+        self.assertEqual(str(recipe), "Test Recipe")
+
+    def test_recipe_total_time_property(self):
+        """Test total time calculated properly"""
+        recipe = Recipe.objects.create(**self.recipe_data)
+        self.assertEqual(recipe.total_time, 45)
