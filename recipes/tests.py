@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 
 class RecipeModelTest(TestCase):
-    """Test case for the Recipe model."""
+    """Test cases for the Recipe model."""
 
     def setUp(self):
         """Set up test data."""
@@ -107,3 +107,51 @@ class RecipeModelTest(TestCase):
         recipe = Recipe(**recipe_data)
         with self.assertRaises(ValidationError):
             recipe.full_clean()
+
+
+class IngredientModelTest(TestCase):
+    """Test cases for Ingredient model"""
+
+    def setUp(self):
+        """Set up test data"""
+        self.user = User.objects.create_user(
+            username="testuser", email="test@example.com", password="testpass123"
+        )
+
+        self.recipe = Recipe.objects.create(
+            title="Test Recipe",
+            description="Test description",
+            servings=4,
+            prep_time=15,
+            cook_time=30,
+            prep_instructions="Prep instructions",
+            cook_instructions="Cook instructions",
+            difficulty="easy",
+            meal_type="dinner",
+            dietary_restrictions="none",
+            author=self.user,
+        )
+
+    def test_ingredient_str_method(self):
+        """Test ingredient string representation"""
+        ingredient = Ingredient.objects.create(
+            recipe=self.recipe, ingredient_name="Flour", quantity=2, unit="cup"
+        )
+        self.assertEqual(str(ingredient), "2 cup Flour")
+
+    def test_ingredient_str_without_quantity(self):
+        """Test ingredient string without quantity"""
+        ingredient = Ingredient.objects.create(
+            recipe=self.recipe, ingredient_name="Salt"
+        )
+        self.assertEqual(str(ingredient), "Salt")
+
+    def test_ingredient_str_with_decimal_quantity(self):
+        """Test ingredient string with decimal quantity"""
+        ingredient = Ingredient.objects.create(
+            recipe=self.recipe,
+            ingredient_name="Flour",
+            quantity=2.5,  # Decimal quantity
+            unit="cup",
+        )
+        self.assertEqual(str(ingredient), "2.5 cup Flour")
