@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import sys
 
 
 if os.path.isfile("env.py"):
@@ -104,6 +105,14 @@ WSGI_APPLICATION = "recipebook.wsgi.application"
 
 DATABASES = {"default": dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 
+# If running tests, use an in-memory SQLite database
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",  # Use SQLite for testing
+            "NAME": ":memory:",  # Use an in-memory database for tests
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
