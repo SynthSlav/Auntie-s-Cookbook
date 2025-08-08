@@ -46,14 +46,14 @@ class RecipeModelTest(TestCase):
         self.assertEqual(recipe.slug, expected_slug)
 
     def test_recipe_manual_slug(self):
-        """Test that slug can be set manually"""
+        """Test that slug can be set manually."""
         recipe_data = self.recipe_data.copy()
         recipe_data["slug"] = "custom-slug"
         recipe = Recipe.objects.create(**recipe_data)
         self.assertEqual(recipe.slug, "custom-slug")
 
     def test_slug_generation_with_special_characters(self):
-        """Test YOUR slug logic with edge cases"""
+        """Test YOUR slug logic with edge cases."""
         recipe_data = self.recipe_data.copy()
         recipe_data["title"] = "Mom's Best Recipe!"
         recipe_data["slug"] = ""  # Auto generation of slug
@@ -61,7 +61,7 @@ class RecipeModelTest(TestCase):
         self.assertEqual(recipe.slug, "mom's-best-recipe!")
 
     def test_slug_generation_with_multiple_spaces(self):
-        """Test YOUR slug logic with multiple spaces"""
+        """Test YOUR slug logic with multiple spaces."""
         recipe_data = self.recipe_data.copy()
         recipe_data["title"] = "Best   Ever   Recipe"
         recipe_data["slug"] = ""
@@ -69,23 +69,23 @@ class RecipeModelTest(TestCase):
         self.assertEqual(recipe.slug, "best---ever---recipe")
 
     def test_recipe_str_method(self):
-        """Verify that string method works correctly"""
+        """Verify that string method works correctly."""
         recipe = Recipe.objects.create(**self.recipe_data)
         self.assertEqual(str(recipe), "Test Recipe")
 
     def test_recipe_total_time_property(self):
-        """Test total time calculated properly"""
+        """Test total time calculated properly."""
         recipe = Recipe.objects.create(**self.recipe_data)
         self.assertEqual(recipe.total_time, 45)
 
     def test_recipe_get_absolute_url(self):
-        """Test get absolute url method"""
+        """Test get absolute url method."""
         recipe = Recipe.objects.create(**self.recipe_data)
         expected_url = f"/recipes/{recipe.slug}/"
         self.assertEqual(recipe.get_absolute_url(), expected_url)
 
     def test_recipe_difficulty_choices(self):
-        """Test difficulty field choices"""
+        """Test difficulty field choices."""
         valid_difficulties = ["easy", "medium", "hard"]
         for difficulty in valid_difficulties:
             recipe_data = self.recipe_data.copy()
@@ -100,7 +100,7 @@ class RecipeModelTest(TestCase):
             self.assertEqual(recipe.difficulty, difficulty)
 
     def test_positive_integer_fields(self):
-        """Test that negative values are rejected"""
+        """Test that negative values are rejected."""
         recipe_data = self.recipe_data.copy()
 
         # Test servings
@@ -117,7 +117,7 @@ class RecipeModelTest(TestCase):
             recipe.full_clean()
 
     def test_positive_integer_fields_reject_zero(self):
-        """Test that zero values are rejected"""
+        """Test that zero values are rejected."""
         recipe_data = self.recipe_data.copy()
         recipe_data["servings"] = 0
         recipe = Recipe(**recipe_data)
@@ -125,7 +125,7 @@ class RecipeModelTest(TestCase):
             recipe.full_clean()
 
     def test_total_time_zero(self):
-        """Test total_time property edge cases"""
+        """Test total_time property edge cases."""
         recipe = Recipe.objects.create(**self.recipe_data)
         recipe.prep_time = 0
         recipe.cook_time = 0
@@ -133,10 +133,10 @@ class RecipeModelTest(TestCase):
 
 
 class IngredientModelTest(TestCase):
-    """Test cases for Ingredient model"""
+    """Test cases for Ingredient model."""
 
     def setUp(self):
-        """Set up test data"""
+        """Set up test data."""
         self.user = User.objects.create_user(
             username="testuser", email="test@example.com", password="testpass123"
         )
@@ -156,21 +156,21 @@ class IngredientModelTest(TestCase):
         )
 
     def test_ingredient_str_method(self):
-        """Test ingredient string representation"""
+        """Test ingredient string representation."""
         ingredient = Ingredient.objects.create(
             recipe=self.recipe, ingredient_name="Flour", quantity=2, unit="cup"
         )
         self.assertEqual(str(ingredient), "2 cup Flour")
 
     def test_ingredient_str_without_quantity(self):
-        """Test ingredient string without quantity"""
+        """Test ingredient string without quantity."""
         ingredient = Ingredient.objects.create(
             recipe=self.recipe, ingredient_name="Salt"
         )
         self.assertEqual(str(ingredient), "Salt")
 
     def test_ingredient_str_with_decimal_quantity(self):
-        """Test ingredient string with decimal quantity"""
+        """Test ingredient string with decimal quantity."""
         ingredient = Ingredient.objects.create(
             recipe=self.recipe,
             ingredient_name="Flour",
@@ -180,7 +180,7 @@ class IngredientModelTest(TestCase):
         self.assertEqual(str(ingredient), "2.5 cup Flour")
 
     def test_ingredient_str_with_empty_unit(self):
-        """Test __str__ method with empty unit"""
+        """Test __str__ method with empty unit."""
         ingredient = Ingredient.objects.create(
             recipe=self.recipe,
             ingredient_name="Eggs",

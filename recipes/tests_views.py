@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 class RecipeViewTest(TestCase):
     def setUp(self):
-        """Set up test data"""
+        """Set up test data."""
         self.client = Client()
         self.user = User.objects.create_user(
             username="testuser", email="test@example.com", password="testpass123"
@@ -35,13 +35,13 @@ class RecipeViewTest(TestCase):
     # AUTHENTICATION & PERMISSIONS TESTS
 
     def test_add_recipe_requires_login(self):
-        """Test that anonymous users can't add recipes"""
+        """Test that anonymous users can't add recipes."""
         response = self.client.get(reverse("add_recipe"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("login", response.url)
 
     def test_edit_recipe_owner_only(self):
-        """Test that only recipe owner can edit"""
+        """Test that only recipe owner can edit."""
         self.client.login(username="otheruser", password="testpass123")
         response = self.client.get(
             reverse("edit_recipe", kwargs={"slug": self.recipe.slug})
@@ -49,7 +49,7 @@ class RecipeViewTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_delete_recipe_owner_only(self):
-        """Test that only recipe owner can delete"""
+        """Test that only recipe owner can delete."""
         self.client.login(username="otheruser", password="testpass123")
         response = self.client.post(
             reverse("delete_recipe", kwargs={"slug": self.recipe.slug})
@@ -60,7 +60,7 @@ class RecipeViewTest(TestCase):
     # RECIPE CREATION WORKFLOW (form processing)
 
     def test_add_recipe_with_ingredients_success(self):
-        """Test complete recipe creation with ingredients"""
+        """Test complete recipe creation with ingredients."""
         self.client.login(username="testuser", password="testpass123")
 
         recipe_data = {
@@ -104,7 +104,7 @@ class RecipeViewTest(TestCase):
         self.assertEqual(flour.order, 1)  # view sets order = i + 1
 
     def test_add_recipe_missing_ingredients(self):
-        """Test error handling for invalid ingredient data"""
+        """Test error handling for invalid ingredient data."""
         self.client.login(username="testuser", password="testpass123")
 
         recipe_data = {
@@ -138,7 +138,7 @@ class RecipeViewTest(TestCase):
     # RECIPE EDITING WORKFLOW
 
     def test_edit_recipe_updates_correctly(self):
-        """Test recipe editing logic"""
+        """Test recipe editing logic."""
         self.client.login(username="testuser", password="testpass123")
 
         # Add an ingredient first
@@ -189,7 +189,7 @@ class RecipeViewTest(TestCase):
         self.assertEqual(updated_ingredient.order, 1)
 
     def test_delete_recipe(self):
-        """Test cascade delete logic"""
+        """Test cascade delete logic."""
         Ingredient.objects.create(
             recipe=self.recipe, ingredient_name="Test Ingredient 1"
         )

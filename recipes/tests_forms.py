@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class RecipeFormTest(TestCase):
     def setUp(self):
-        """Set up test data"""
+        """Set up test data."""
         self.user = User.objects.create_user(
             username="testuser", password="testpass123"
         )
@@ -25,13 +25,13 @@ class RecipeFormTest(TestCase):
         }
 
     def test_recipe_form_valid_data(self):
-        """Test form with valid data"""
+        """Test form with valid data."""
         form = RecipeForm(data=self.valid_recipe_data)
         self.assertTrue(form.is_valid())
         self.assertEqual(form.errors, {})
 
     def test_recipe_form_missing_required_fields(self):
-        """Test form validation for required fields"""
+        """Test form validation for required fields."""
         # Test each required field individually
         required_fields = [
             "title",
@@ -52,7 +52,7 @@ class RecipeFormTest(TestCase):
                 self.assertIn(field, form.errors)
 
     def test_recipe_form_invalid_choice_fields(self):
-        """Test choice field validation"""
+        """Test choice field validation."""
         choice_tests = [
             ("difficulty", "impossible"),
             ("meal_type", "midnight_snack"),
@@ -71,7 +71,7 @@ class RecipeFormTest(TestCase):
 
 class IngredientFormTest(TestCase):
     def setUp(self):
-        """Set up test data"""
+        """Set up test data."""
         self.valid_ingredient_data = {
             "ingredient_name": "Flour",
             "quantity": 2.5,
@@ -80,12 +80,12 @@ class IngredientFormTest(TestCase):
         }
 
     def test_ingredient_form_valid_data(self):
-        """Test ingredient form with valid data"""
+        """Test ingredient form with valid data."""
         form = IngredientForm(data=self.valid_ingredient_data)
         self.assertTrue(form.is_valid())
 
     def test_ingredient_form_missing_name_fails(self):
-        """Test validation, ingredient_name is required"""
+        """Test validation, ingredient_name is required."""
         data = self.valid_ingredient_data.copy()
         del data["ingredient_name"]
 
@@ -94,8 +94,8 @@ class IngredientFormTest(TestCase):
         self.assertIn("ingredient_name", form.errors)
 
     def test_ingredient_form_unit_empty_option_for_new_ingredients(self):
-        """Test custom __init__ logic for unit choices"""
-        form = IngredientForm()  # New ingredient (no instance)
+        """Test custom __init__ logic for unit choices."""
+        form = IngredientForm()  # New ingredient
 
         # Check that form adds the empty "--- Select Unit ---" option
         unit_choices = form.fields["unit"].choices
