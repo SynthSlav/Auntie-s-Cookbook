@@ -67,3 +67,38 @@ class RecipeFormTest(TestCase):
                 form = RecipeForm(data=data)
                 self.assertFalse(form.is_valid())
                 self.assertIn(field, form.errors)
+
+
+class IngredientFormTest(TestCase):
+    def setUp(self):
+        """Set up test data"""
+        self.valid_ingredient_data = {
+            "ingredient_name": "Flour",
+            "quantity": 2.5,
+            "unit": "cup",
+            "notes": "All-purpose flour",
+        }
+
+    def test_ingredient_form_valid_data(self):
+        """Test ingredient form with valid data"""
+        form = IngredientForm(data=self.valid_ingredient_data)
+        self.assertTrue(form.is_valid())
+
+    def test_ingredient_form_missing_name_fails(self):
+        """Test validation, ingredient_name is required"""
+        data = self.valid_ingredient_data.copy()
+        del data["ingredient_name"]
+
+        form = IngredientForm(data=data)
+        self.assertFalse(form.is_valid())
+        self.assertIn("ingredient_name", form.errors)
+
+    def test_ingredient_form_unit_empty_option_for_new_ingredients(self):
+        """Test custom __init__ logic for unit choices"""
+        form = IngredientForm()  # New ingredient (no instance)
+
+        # Check that form adds the empty "--- Select Unit ---" option
+        unit_choices = form.fields["unit"].choices
+        first_choice = unit_choices[0]
+        self.assertEqual(first_choice[0], "")  # Empty value
+        self.assertIn("Select Unit", first_choice[1])
