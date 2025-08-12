@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.text import slugify
 from .forms import RecipeForm, IngredientFormSet
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -13,7 +14,12 @@ def recipe_list(request):
     """Display a list of all recipes."""
     # Fetch all recipes from the database
     recipes = Recipe.objects.all()
-    return render(request, "recipes/recipe_list.html", {"recipes": recipes})
+
+    # Paginate the recipes, showing 10 per page
+    paginator = Paginator(recipes, 10)  # Show 10 recipes per page
+    page_number = request.GET.get("page")  # Get the page number from the request
+    page_obj = paginator.get_page(page_number)
+    return render(request, "recipes/recipe_list.html", {"page_obj": page_obj})
 
 
 def recipe_detail(request, slug):

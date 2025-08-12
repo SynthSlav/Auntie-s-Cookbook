@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h1 class="display-5 mb-2">All Recipes</h1>
-                <p class="text-muted">Discover {{ recipes.count }} delicious recipes</p>
+                <p class="text-muted">Discover {{ page_obj.paginator.count }} delicious recipes</p>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <!-- Filter Button -->
@@ -52,9 +52,9 @@
 
 <!-- Recipe Container -->
 <div id="recipeContainer">
-    <div class="row" id="recipeGrid">
-        {% for recipe in recipes %}
-        <div class="col-6 col-md-6 col-lg-4 col-xl-3 mb-4 recipe-item" data-meal-type="{{ recipe.meal_type }}"
+    <div class="row mx-2" id="recipeGrid">
+        {% for recipe in page_obj %}
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4 recipe-item" data-meal-type="{{ recipe.meal_type }}"
             data-difficulty="{{ recipe.difficulty }}" data-dietary="{{ recipe.dietary_restrictions }}">
             <div id="item-card" class="card h-100 shadow-sm recipe-card">
                 <!-- Recipe Image -->
@@ -148,6 +148,46 @@
         </div>
         {% endfor %}
     </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <nav aria-label="Recipe pagination">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                        </li>
+                        {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
 </div>
 <!-- Filter Modal -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">

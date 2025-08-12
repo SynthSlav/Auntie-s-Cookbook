@@ -24,7 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const activeFiltersDiv = document.getElementById('activeFilters');
         const filterTagsDiv = document.getElementById('filterTags');
 
-        if (!applyFiltersBtn) return; // Exit if no filter elements
+        if (!applyFiltersBtn) {
+
+            return;
+        } // Exit if no filter elements
         // Get selected filters
         // This function collects the values of all checked checkboxes and returns them as an object
         function getSelectedFilters() {
@@ -109,7 +112,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update filter tags
         // This function updates the filter tags displayed above the recipe list based on selected filters
         function updateFilterTags(filters) {
-            if (!filterTagsDiv) return;
+            if (!filterTagsDiv) {
+
+                return;
+            }
 
             filterTagsDiv.innerHTML = '';
             let hasFilters = false;
@@ -140,8 +146,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Add filter tag
         // This function creates a tag for each selected filter and adds it to the filter tags div
         function addFilterTag(displayText, value) {
-            if (!filterTagsDiv) return;
-
+            if (!filterTagsDiv) {
+                return;
+            }
             const tag = document.createElement('span');
             tag.className = 'filter-tag';
             tag.innerHTML = `${displayText} <span class="filter-close">×</span>`;
