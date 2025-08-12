@@ -249,27 +249,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
-            // Toggle favorite button
+
             // This function toggles the favorite state of the recipe when the button is clicked
-            const favoriteBtn = document.querySelector('.btn-outline-primary');
-            if (favoriteBtn) {
-                favoriteBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const icon = this.querySelector('i');
-                    if (icon.classList.contains('fas')) {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
-                        this.classList.remove('btn-outline-primary');
-                        this.classList.add('btn-primary');
-                    } else {
-                        icon.classList.remove('far');
-                        icon.classList.add('fas');
-                        this.classList.remove('btn-primary');
-                        this.classList.add('btn-outline-primary');
-                    }
-                    console.log('Favorite toggled');
-                });
-            }
+
         }
 
         initializeIngredientCheckboxes();
