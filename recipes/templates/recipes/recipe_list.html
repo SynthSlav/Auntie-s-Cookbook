@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h1 class="display-5 mb-2">All Recipes</h1>
-                <p class="text-muted">Discover {{ page_obj.paginator.count }} delicious recipes</p>
+                <p class="text-muted">Discover {{ total_recipes }} delicious recipe{{ total_recipes|pluralize }}</p>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <!-- Filter Button -->
@@ -38,17 +38,51 @@
     </div>
 </div>
 
-<div class="row mb-3" id="activeFilters" style="display: none;">
+<!-- Active Filters Section -->
+{% if active_filters.meal_types or active_filters.difficulties or active_filters.dietary_restrictions %}
+<div class="row mb-3" id="activeFilters">
     <div class="col-12">
         <div class="d-flex align-items-center gap-2 flex-wrap">
             <small class="text-muted">Active filters:</small>
-            <div id="filterTags"></div>
-            <button class="btn " id="clearAllFilters">
+            <div id="filterTags">
+                {% for meal_type in active_filters.meal_types %}
+                <span class="filter-tag" data-param="meal_type" data-value="{{ meal_type }}">
+                    {{ meal_type|title }} <span class="filter-close">×</span>
+                </span>
+                {% endfor %}
+                {% for difficulty in active_filters.difficulties %}
+                <span class="filter-tag" data-param="difficulty" data-value="{{ difficulty }}">
+                    {{ difficulty|title }} <span class="filter-close">×</span>
+                </span>
+                {% endfor %}
+                {% for dietary in active_filters.dietary_restrictions %}
+                <span class="filter-tag" data-param="dietary" data-value="{{ dietary }}">
+                    {% if dietary == 'gluten_free' %}Gluten Free
+                    {% elif dietary == 'dairy_free' %}Dairy Free
+                    {% else %}{{ dietary|title }}{% endif %}
+                    <span class="filter-close">×</span>
+                </span>
+                {% endfor %}
+            </div>
+            <button class="btn" id="clearAllFilters">
                 <small>Clear all filters</small>
             </button>
         </div>
     </div>
 </div>
+{% else %}
+<div class="row mb-3" id="activeFilters" style="display: none;">
+    <div class="col-12">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <small class="text-muted">Active filters:</small>
+            <div id="filterTags"></div>
+            <button class="btn" id="clearAllFilters">
+                <small>Clear all filters</small>
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <!-- Recipe Container -->
 <div id="recipeContainer">
@@ -157,14 +191,11 @@
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link"
-                            href="?page=1{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">
-                            First</a>
+                        <a class="page-link" href="?page=1{{ filter_query_string }}">First</a>
                     </li>
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page={{ page_obj.previous_page_number }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">&laquo;
-                            Prev</a>
+                            href="?page={{ page_obj.previous_page_number }}{{ filter_query_string }}">&laquo; Prev</a>
                     </li>
                     {% endif %}
 
@@ -173,28 +204,22 @@
                     <li class="page-item active">
                         <span class="page-link">{{ num }}</span>
                     </li>
-                    {% else %}
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page={{ num }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">
-                            {{ num }}
-                        </a>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
+                    {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %} <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{{ filter_query_string }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
 
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page={{ page_obj.next_page_number }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">Next
-                            &raquo;</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">Last
-                        </a>
-                    </li>
-                    {% endif %}
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ page_obj.next_page_number }}{{ filter_query_string }}">Next &raquo;</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ page_obj.paginator.num_pages }}{{ filter_query_string }}">Last</a>
+                        </li>
+                        {% endif %}
                 </ul>
             </nav>
         </div>

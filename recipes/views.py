@@ -11,6 +11,56 @@ from django.core.paginator import Paginator
 
 
 def recipe_list(request):
+    """Display paginated list of recipes with filtering."""
+    # Start with all recipes
+    recipes = Recipe.objects.all()
+
+    # Get filter parameters from request
+    meal_types = request.GET.getlist("meal_type")
+    difficulties = request.GET.getlist("difficulty")
+    dietary_restrictions = request.GET.getlist("dietary")
+
+    # Apply filters if any are selected
+    if meal_types:
+        recipes = recipes.filter(meal_type__in=meal_types)
+
+    if difficulties:
+        recipes = recipes.filter(difficulty__in=difficulties)
+
+    if dietary_restrictions:
+        recipes = recipes.filter(dietary_restrictions__in=dietary_restrictions)
+
+    # Paginate the filtered recipes, showing 10 per page
+    paginator = Paginator(recipes, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    # Prepare active filters for template
+    active_filters = {
+        "meal_types": meal_types,
+        "difficulties": difficulties,
+        "dietary_restrictions": dietary_restrictions,
+    }
+
+    # Build query string for pagination links
+    filter_query_string = ""
+    for meal_type in meal_types:
+        filter_query_string += f"&meal_type={meal_type}"
+    for difficulty in difficulties:
+        filter_query_string += f"&difficulty={difficulty}"
+    for dietary in dietary_restrictions:
+        filter_query_string += f"&dietary={dietary}"
+
+    return render(
+        request,
+        "recipes/recipe_list.html",
+        {
+            "page_obj": page_obj,
+            "active_filters": active_filters,
+            "filter_query_string": filter_query_string,
+            "total_recipes": recipes.count(),
+        },
+    )
     """Display a list of all recipes."""
     # Fetch all recipes from the database
     recipes = Recipe.objects.all()

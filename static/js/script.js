@@ -86,154 +86,134 @@ document.addEventListener('DOMContentLoaded', function () {
         const applyFiltersBtn = document.getElementById('applyFilters');
         const clearFiltersBtn = document.getElementById('clearFilters');
         const clearAllFiltersBtn = document.getElementById('clearAllFilters');
-        const activeFiltersDiv = document.getElementById('activeFilters');
-        const filterTagsDiv = document.getElementById('filterTags');
 
         if (!applyFiltersBtn) {
             return;
-        } // Exit if no filter elements
+        }
 
-        // Apply filters
-        // This function filters the recipe items based on selected checkboxes
+        loadFiltersFromURL();
+        initializeFilterTagHandlers();
+
+        function getSelectedFilters() {
+            const filters = {
+                mealTypes: [],
+                difficulties: [],
+                dietary: []
+            };
+
+            document.querySelectorAll('input[id^="meal-"]:checked').forEach(function (checkbox) {
+                filters.mealTypes.push(checkbox.value);
+            });
+
+            document.querySelectorAll('input[id^="diff-"]:checked').forEach(function (checkbox) {
+                filters.difficulties.push(checkbox.value);
+            });
+
+            document.querySelectorAll('input[id^="diet-"]:checked').forEach(function (checkbox) {
+                filters.dietary.push(checkbox.value);
+            });
+
+            return filters;
+        }
+
+        function loadFiltersFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const mealTypes = urlParams.getAll('meal_type');
+            const difficulties = urlParams.getAll('difficulty');
+            const dietary = urlParams.getAll('dietary');
+
+            mealTypes.forEach(type => {
+                const checkbox = document.getElementById(`meal-${type}`);
+                if (checkbox) checkbox.checked = true;
+            });
+
+            difficulties.forEach(diff => {
+                const checkbox = document.getElementById(`diff-${diff}`);
+                if (checkbox) checkbox.checked = true;
+            });
+
+            dietary.forEach(diet => {
+                const checkbox = document.getElementById(`diet-${diet}`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+
+        function initializeFilterTagHandlers() {
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.filter-tag')) {
+                    const filterTag = e.target.closest('.filter-tag');
+                    const paramName = filterTag.dataset.param;
+                    const value = filterTag.dataset.value;
+
+                    if (paramName && value) {
+                        removeFilter(paramName, value);
+                    }
+                }
+            });
+        }
+
+        function removeFilter(paramName, value) {
+            const url = new URL(window.location);
+            const currentValues = url.searchParams.getAll(paramName);
+            url.searchParams.delete(paramName);
+            currentValues.forEach(val => {
+                if (val !== value) {
+                    url.searchParams.append(paramName, val);
+                }
+            });
+            url.searchParams.delete('page');
+            window.location.href = url.toString();
+        }
+
         function applyFilters() {
             const filters = getSelectedFilters();
-            const recipeItems = document.querySelectorAll('.recipe-item');
-            let visibleCount = 0;
+            const url = new URL(window.location.origin + window.location.pathname);
 
-            recipeItems.forEach(function (item) {
-                let showItem = true;
-
-                if (filters.mealTypes.length > 0) {
-                    if (!filters.mealTypes.includes(item.dataset.mealType)) {
-                        showItem = false;
-                    }
-                }
-
-                if (filters.difficulties.length > 0) {
-                    if (!filters.difficulties.includes(item.dataset.difficulty)) {
-                        showItem = false;
-                    }
-                }
-
-                if (filters.dietary.length > 0) {
-                    if (!filters.dietary.includes(item.dataset.dietary)) {
-                        showItem = false;
-                    }
-                }
-
-                if (showItem) {
-                    item.style.display = 'block';
-                    item.classList.remove('filtered-out');
-                    visibleCount++;
-                } else {
-                    item.classList.add('filtered-out');
-                    setTimeout(() => {
-                        if (item.classList.contains('filtered-out')) {
-                            item.style.display = 'none';
-                        }
-                    }, 300);
-                }
+            filters.mealTypes.forEach(type => {
+                url.searchParams.append('meal_type', type);
             });
 
-            updateFilterTags(filters);
-            updateRecipeCount(visibleCount);
+            filters.difficulties.forEach(diff => {
+                url.searchParams.append('difficulty', diff);
+            });
 
-            // Fix aria-hidden warning
-            if (applyFiltersBtn) {
-                applyFiltersBtn.blur();
-            }
+            filters.dietary.forEach(diet => {
+                url.searchParams.append('dietary', diet);
+            });
+
+            window.location.href = url.toString();
         }
 
-        // Update filter tags
-        // This function updates the filter tags displayed above the recipe list based on selected filters
-        function updateFilterTags(filters) {
-            if (!filterTagsDiv) {
-                return;
-            }
-
-            filterTagsDiv.innerHTML = '';
-            let hasFilters = false;
-
-            filters.mealTypes.forEach(function (mealType) {
-                addFilterTag(capitalize(mealType), mealType);
-                hasFilters = true;
-            });
-
-            filters.difficulties.forEach(function (difficulty) {
-                addFilterTag(capitalize(difficulty), difficulty);
-                hasFilters = true;
-            });
-
-            filters.dietary.forEach(function (dietary) {
-                addFilterTag(capitalize(dietary), dietary);
-                hasFilters = true;
-            });
-
-            if (activeFiltersDiv) {
-                activeFiltersDiv.style.display = hasFilters ? 'block' : 'none';
-            }
-        }
-
-        // Add filter tag
-        // This function creates a tag for each selected filter and adds it to the filter tags div
-        function addFilterTag(displayText, value) {
-            if (!filterTagsDiv) {
-                return;
-            }
-            const tag = document.createElement('span');
-            tag.className = 'filter-tag';
-            tag.innerHTML = `${displayText} <span class="filter-close">×</span>`;
-
-            tag.addEventListener('click', function (e) {
-                e.stopPropagation();
-                const checkbox = document.querySelector(`input[value="${value}"]`);
-                if (checkbox) {
-                    checkbox.checked = false;
-                }
-                applyFilters();
-            });
-
-            tag.style.cursor = 'pointer';
-            filterTagsDiv.appendChild(tag);
-        }
-
-        // Clear all filters
-        // This function resets all filters and shows all recipes
         function clearAllFilters() {
-            document.querySelectorAll('#filterModal input[type="checkbox"]').forEach(function (checkbox) {
-                checkbox.checked = false;
-            });
-
-            document.querySelectorAll('.recipe-item').forEach(function (item) {
-                item.style.display = 'block';
-                item.classList.remove('filtered-out');
-            });
-
-            if (activeFiltersDiv) {
-                activeFiltersDiv.style.display = 'none';
-            }
-            if (filterTagsDiv) {
-                filterTagsDiv.innerHTML = '';
-            }
-
-            const totalRecipes = document.querySelectorAll('.recipe-item').length;
-            updateRecipeCount(totalRecipes);
+            const url = new URL(window.location.origin + window.location.pathname);
+            window.location.href = url.toString();
         }
 
         // Event listeners
         if (applyFiltersBtn) {
-            applyFiltersBtn.addEventListener('click', applyFilters);
+            applyFiltersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                applyFilters();
+            });
         }
 
         if (clearFiltersBtn) {
-            clearFiltersBtn.addEventListener('click', clearAllFilters);
+            clearFiltersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                clearAllFilters();
+            });
         }
 
         if (clearAllFiltersBtn) {
-            clearAllFiltersBtn.addEventListener('click', clearAllFilters);
+            clearAllFiltersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                clearAllFilters();
+            });
         }
 
-        console.log('Filter functionality initialized');
+        window.removeFilter = removeFilter;
+        window.clearAllFilters = clearAllFilters;
     }
 
     // Recipe Detail Features
