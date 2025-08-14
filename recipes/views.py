@@ -15,10 +15,32 @@ def recipe_list(request):
     # Fetch all recipes from the database
     recipes = Recipe.objects.all()
 
-    # Paginate the recipes, showing 10 per page
-    paginator = Paginator(recipes, 10)  # Show 10 recipes per page
-    page_number = request.GET.get("page")  # Get the page number from the request
-    page_obj = paginator.get_page(page_number)
+    # Get filter parameters from URL
+    meal_type = request.GET.get("meal_type")
+    difficulty = request.GET.get("difficulty")
+    dietary = request.GET.get("dietary")
+
+    # Apply filters
+    if meal_type:
+        meal_types = meal_type.split(",")
+        recipes = recipes.filter(meal_type__in=meal_types)
+
+    if difficulty:
+        difficulties = difficulty.split(",")
+        recipes = recipes.filter(difficulty__in=difficulties)
+
+    if dietary:
+        dietary_restrictions = dietary.split(",")
+        recipes = recipes.filter(dietary_restrictions__in=dietary_restrictions)
+
+    # Paginate the filtered results
+    paginator = Paginator(recipes, 10)  # 10 recipes per page
+    page_number = request.GET.get(
+        "page"
+    )  # Get the current page number from the request
+    page_obj = paginator.get_page(
+        page_number
+    )  # Get the page object for the current page
     return render(request, "recipes/recipe_list.html", {"page_obj": page_obj})
 
 

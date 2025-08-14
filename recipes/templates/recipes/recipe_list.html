@@ -157,10 +157,14 @@
                 <ul class="pagination justify-content-center">
                     {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page=1"> First</a>
+                        <a class="page-link"
+                            href="?page=1{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">
+                            First</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Prev</a>
+                        <a class="page-link"
+                            href="?page={{ page_obj.previous_page_number }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">&laquo;
+                            Prev</a>
                     </li>
                     {% endif %}
 
@@ -169,20 +173,28 @@
                     <li class="page-item active">
                         <span class="page-link">{{ num }}</span>
                     </li>
-                    {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %} <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
+                    {% else %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ num }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
 
-                        {% if page_obj.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last </a>
-                        </li>
-                        {% endif %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.next_page_number }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">Next
+                            &raquo;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.meal_type %}&meal_type={{ request.GET.meal_type }}{% endif %}{% if request.GET.difficulty %}&difficulty={{ request.GET.difficulty }}{% endif %}{% if request.GET.dietary %}&dietary={{ request.GET.dietary }}{% endif %}">Last
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

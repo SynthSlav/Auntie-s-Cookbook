@@ -1,0 +1,16 @@
+{
+  "name": "auntie's-cookbook",
+  "version": "1.0.0",
+  "description": "Recipe management application",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "devDependencies": {
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5"
+  }
+}

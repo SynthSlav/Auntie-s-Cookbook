@@ -6,6 +6,8 @@ For form styling using the django userform template dependency django-widget-twe
 
 - Dynamic ingredient management with animations - enhanced with AI assistance + form and view.
 
+- Code in the template for fixing the filters resseting during recipe list page changes were done with AI
+
 next commit : 
 
 
