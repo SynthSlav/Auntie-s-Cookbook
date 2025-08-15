@@ -1,7 +1,7 @@
-    .venv
-    env.py
-    notes&credits.txt
-    staticfiles/
+.venv
+env.py
+notes&credits.txt
+staticfiles/
 
 node_modules/
 package-lock.json

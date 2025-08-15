@@ -1,3 +1,68 @@
+// Functions for filtering recipes, updating ingredient styles, and managing recipe counts
+// These functions are used in the recipe app to handle user interactions and data updates
+// They are also exported for testing purposes
+function getSelectedFilters() {
+    const filters = {
+        mealTypes: [],
+        difficulties: [],
+        dietary: []
+    };
+
+    document.querySelectorAll('input[id^="meal-"]:checked').forEach(function (checkbox) {
+        filters.mealTypes.push(checkbox.value);
+    });
+
+    document.querySelectorAll('input[id^="diff-"]:checked').forEach(function (checkbox) {
+        filters.difficulties.push(checkbox.value);
+    });
+
+    document.querySelectorAll('input[id^="diet-"]:checked').forEach(function (checkbox) {
+        filters.dietary.push(checkbox.value);
+    });
+
+    return filters;
+}
+
+function updateIngredientStyle(checkbox, ingredientText) {
+    if (checkbox.checked) {
+        ingredientText.style.textDecoration = 'line-through';
+        ingredientText.style.opacity = '0.6';
+    } else {
+        ingredientText.style.textDecoration = 'none';
+        ingredientText.style.opacity = '1';
+    }
+}
+
+function updateRecipeCount(count) {
+    const countElement = document.querySelector('.text-muted');
+    if (countElement && countElement.textContent.includes('recipe')) {
+        countElement.textContent = `Discover ${count} delicious recipes`;
+    }
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).replace('_', ' ');
+}
+
+function validateIngredients(ingredientFormsContainer) {
+    const visibleForms = ingredientFormsContainer.querySelectorAll('.ingredient-form:not(.d-none)');
+    let hasIngredient = false;
+
+    visibleForms.forEach(form => {
+        const nameInput = form.querySelector('input[name$="-ingredient_name"]');
+        const deleteCheckbox = form.querySelector('input[name$="-DELETE"]');
+
+        if (nameInput && nameInput.value.trim() && (!deleteCheckbox || !deleteCheckbox.checked)) {
+            hasIngredient = true;
+        }
+    });
+
+    return hasIngredient;
+}
+
+// Event listener for DOMContentLoaded to initialize functionality
+// This ensures that the script runs after the DOM is fully loaded
+
 document.addEventListener('DOMContentLoaded', function () {
     console.log('All functionality loading...');
 
@@ -21,12 +86,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const applyFiltersBtn = document.getElementById('applyFilters');
         const clearFiltersBtn = document.getElementById('clearFilters');
         const clearAllFiltersBtn = document.getElementById('clearAllFilters');
-        const activeFiltersDiv = document.getElementById('activeFilters');
-        const filterTagsDiv = document.getElementById('filterTags');
 
-        if (!applyFiltersBtn) return; // Exit if no filter elements
-        // Get selected filters
-        // This function collects the values of all checked checkboxes and returns them as an object
+        if (!applyFiltersBtn) {
+            return;
+        }
+
+        loadFiltersFromURL();
+        initializeFilterTagHandlers();
+
         function getSelectedFilters() {
             const filters = {
                 mealTypes: [],
@@ -48,153 +115,105 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return filters;
         }
-        // Apply filters
-        // This function filters the recipe items based on selected checkboxes
+
+        function loadFiltersFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const mealTypes = urlParams.getAll('meal_type');
+            const difficulties = urlParams.getAll('difficulty');
+            const dietary = urlParams.getAll('dietary');
+
+            mealTypes.forEach(type => {
+                const checkbox = document.getElementById(`meal-${type}`);
+                if (checkbox) checkbox.checked = true;
+            });
+
+            difficulties.forEach(diff => {
+                const checkbox = document.getElementById(`diff-${diff}`);
+                if (checkbox) checkbox.checked = true;
+            });
+
+            dietary.forEach(diet => {
+                const checkbox = document.getElementById(`diet-${diet}`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+
+        function initializeFilterTagHandlers() {
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.filter-tag')) {
+                    const filterTag = e.target.closest('.filter-tag');
+                    const paramName = filterTag.dataset.param;
+                    const value = filterTag.dataset.value;
+
+                    if (paramName && value) {
+                        removeFilter(paramName, value);
+                    }
+                }
+            });
+        }
+
+        function removeFilter(paramName, value) {
+            const url = new URL(window.location);
+            const currentValues = url.searchParams.getAll(paramName);
+            url.searchParams.delete(paramName);
+            currentValues.forEach(val => {
+                if (val !== value) {
+                    url.searchParams.append(paramName, val);
+                }
+            });
+            url.searchParams.delete('page');
+            window.location.href = url.toString();
+        }
+
         function applyFilters() {
             const filters = getSelectedFilters();
-            const recipeItems = document.querySelectorAll('.recipe-item');
-            let visibleCount = 0;
+            const url = new URL(window.location.origin + window.location.pathname);
 
-            recipeItems.forEach(function (item) {
-                let showItem = true;
-
-                if (filters.mealTypes.length > 0) {
-                    if (!filters.mealTypes.includes(item.dataset.mealType)) {
-                        showItem = false;
-                    }
-                }
-
-                if (filters.difficulties.length > 0) {
-                    if (!filters.difficulties.includes(item.dataset.difficulty)) {
-                        showItem = false;
-                    }
-                }
-
-                if (filters.dietary.length > 0) {
-                    if (!filters.dietary.includes(item.dataset.dietary)) {
-                        showItem = false;
-                    }
-                }
-
-                if (showItem) {
-                    item.style.display = 'block';
-                    item.classList.remove('filtered-out');
-                    visibleCount++;
-                } else {
-                    item.classList.add('filtered-out');
-                    setTimeout(() => {
-                        if (item.classList.contains('filtered-out')) {
-                            item.style.display = 'none';
-                        }
-                    }, 300);
-                }
+            filters.mealTypes.forEach(type => {
+                url.searchParams.append('meal_type', type);
             });
 
-            updateFilterTags(filters);
-            updateRecipeCount(visibleCount);
+            filters.difficulties.forEach(diff => {
+                url.searchParams.append('difficulty', diff);
+            });
 
-            // Fix aria-hidden warning
-            if (applyFiltersBtn) {
-                applyFiltersBtn.blur();
-            }
+            filters.dietary.forEach(diet => {
+                url.searchParams.append('dietary', diet);
+            });
+
+            window.location.href = url.toString();
         }
-        // Update recipe count
-        // This function updates the recipe count displayed on the page
-        function updateRecipeCount(count) {
-            const countElement = document.querySelector('.text-muted');
-            if (countElement && countElement.textContent.includes('recipe')) {
-                countElement.textContent = `Discover ${count} delicious recipes`;
-            }
-        }
-        // Update filter tags
-        // This function updates the filter tags displayed above the recipe list based on selected filters
-        function updateFilterTags(filters) {
-            if (!filterTagsDiv) return;
 
-            filterTagsDiv.innerHTML = '';
-            let hasFilters = false;
-
-            function capitalize(str) {
-                return str.charAt(0).toUpperCase() + str.slice(1).replace('_', ' ');
-            }
-
-            filters.mealTypes.forEach(function (mealType) {
-                addFilterTag(capitalize(mealType), mealType);
-                hasFilters = true;
-            });
-
-            filters.difficulties.forEach(function (difficulty) {
-                addFilterTag(capitalize(difficulty), difficulty);
-                hasFilters = true;
-            });
-
-            filters.dietary.forEach(function (dietary) {
-                addFilterTag(capitalize(dietary), dietary);
-                hasFilters = true;
-            });
-
-            if (activeFiltersDiv) {
-                activeFiltersDiv.style.display = hasFilters ? 'block' : 'none';
-            }
-        }
-        // Add filter tag
-        // This function creates a tag for each selected filter and adds it to the filter tags div
-        function addFilterTag(displayText, value) {
-            if (!filterTagsDiv) return;
-
-            const tag = document.createElement('span');
-            tag.className = 'filter-tag';
-            tag.innerHTML = `${displayText} <span class="filter-close">×</span>`;
-
-            tag.addEventListener('click', function (e) {
-                e.stopPropagation();
-                const checkbox = document.querySelector(`input[value="${value}"]`);
-                if (checkbox) {
-                    checkbox.checked = false;
-                }
-                applyFilters();
-            });
-
-            tag.style.cursor = 'pointer';
-            filterTagsDiv.appendChild(tag);
-        }
-        // Clear all filters
-        // This function resets all filters and shows all recipes
         function clearAllFilters() {
-            document.querySelectorAll('#filterModal input[type="checkbox"]').forEach(function (checkbox) {
-                checkbox.checked = false;
-            });
-
-            document.querySelectorAll('.recipe-item').forEach(function (item) {
-                item.style.display = 'block';
-                item.classList.remove('filtered-out');
-            });
-
-            if (activeFiltersDiv) {
-                activeFiltersDiv.style.display = 'none';
-            }
-            if (filterTagsDiv) {
-                filterTagsDiv.innerHTML = '';
-            }
-
-            const totalRecipes = document.querySelectorAll('.recipe-item').length;
-            updateRecipeCount(totalRecipes);
+            const url = new URL(window.location.origin + window.location.pathname);
+            window.location.href = url.toString();
         }
 
         // Event listeners
         if (applyFiltersBtn) {
-            applyFiltersBtn.addEventListener('click', applyFilters);
+            applyFiltersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                applyFilters();
+            });
         }
 
         if (clearFiltersBtn) {
-            clearFiltersBtn.addEventListener('click', clearAllFilters);
+            clearFiltersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                clearAllFilters();
+            });
         }
 
         if (clearAllFiltersBtn) {
-            clearAllFiltersBtn.addEventListener('click', clearAllFilters);
+            clearAllFiltersBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                clearAllFilters();
+            });
         }
 
-        console.log('Filter functionality initialized');
+        window.removeFilter = removeFilter;
+        window.clearAllFilters = clearAllFilters;
     }
 
     // Recipe Detail Features
@@ -211,59 +230,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         }
-        // Update ingredient style based on checkbox state
-        // This function applies a line-through style to the ingredient text when the checkbox is checked
-        function updateIngredientStyle(checkbox, ingredientText) {
-            if (checkbox.checked) {
-                ingredientText.style.textDecoration = 'line-through';
-                ingredientText.style.opacity = '0.6';
-            } else {
-                ingredientText.style.textDecoration = 'none';
-                ingredientText.style.opacity = '1';
-            }
-        }
-        // Initialize action buttons
-        // This function sets up event listeners for the action buttons on the recipe detail page
-        function initializeActionButtons() {
-            const editBtn = document.querySelector('.btn-outline-warning');
-            if (editBtn) {
-                editBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    console.log('Edit recipe clicked');
-                });
-            }
 
-            const deleteBtn = document.querySelector('.btn-outline-danger');
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (confirm('Are you sure you want to delete this recipe?')) {
-                        console.log('Delete recipe confirmed');
-                    }
-                });
-            }
-            // Toggle favorite button
-            // This function toggles the favorite state of the recipe when the button is clicked
-            const favoriteBtn = document.querySelector('.btn-outline-primary');
-            if (favoriteBtn) {
-                favoriteBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const icon = this.querySelector('i');
-                    if (icon.classList.contains('fas')) {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
-                        this.classList.remove('btn-outline-primary');
-                        this.classList.add('btn-primary');
-                    } else {
-                        icon.classList.remove('far');
-                        icon.classList.add('fas');
-                        this.classList.remove('btn-primary');
-                        this.classList.add('btn-outline-primary');
-                    }
-                    console.log('Favorite toggled');
-                });
-            }
-        }
+
 
         initializeIngredientCheckboxes();
         initializeActionButtons();
@@ -316,6 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 clearFormInputs(form);
             });
         }
+
         // Add new ingredient form
         // This function adds a new ingredient form to the formset
         function addNewIngredientForm() {
@@ -378,6 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateEmptyState();
             }
         }
+
         // Delete ingredient form
         // This function marks the form for deletion and hides it after a short animation
         function deleteIngredientForm(ingredientForm) {
@@ -403,6 +373,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateEmptyState();
             }, 400);
         }
+
         // Update form indexes for name, id, and for attributes
         // This ensures that the formset works correctly with Django's form management
         function updateFormIndexes(form, newIndex) {
@@ -427,6 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
+
         // Clear form inputs
         // This function resets all inputs in a form to their default state
         function clearFormInputs(form) {
@@ -441,6 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
+
         // Update ingredient count, numbers, and empty state
         // These functions handle the dynamic updates of the ingredient form count and display
         function updateIngredientCount() {
@@ -458,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }
+
         // Update ingredient numbers in each form
         // This function updates the displayed number of each ingredient form based on its position
         function updateIngredientNumbers() {
@@ -469,6 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
+
         // Update empty state message
         // This function shows or hides the empty state message based on the number of visible ingredient forms
         function updateEmptyState() {
@@ -477,6 +452,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 emptyMessage.style.display = visibleForms.length === 0 ? 'block' : 'none';
             }
         }
+
         // Show notification function
         // This function creates a notification element and displays it on the screen
         function showNotification(message, type = 'info') {
@@ -504,21 +480,11 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Form not found');
             return;
         }
+
         form.addEventListener('submit', function (e) {
             const submitBtn = form.querySelector('button[type="submit"]');
-            const visibleForms = ingredientFormsContainer.querySelectorAll('.ingredient-form:not(.d-none)');
-            let hasIngredient = false;
 
-            visibleForms.forEach(form => {
-                const nameInput = form.querySelector('input[name$="-ingredient_name"]');
-                const deleteCheckbox = form.querySelector('input[name$="-DELETE"]');
-
-                if (nameInput && nameInput.value.trim() && (!deleteCheckbox || !deleteCheckbox.checked)) {
-                    hasIngredient = true;
-                }
-            });
-
-            if (!hasIngredient) {
+            if (!validateIngredients(ingredientFormsContainer)) {
                 e.preventDefault();
                 showNotification('Please add at least one ingredient with a name.', 'danger');
 
@@ -556,3 +522,14 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Add recipe form initialized successfully');
     }
 });
+
+// Export functions for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        getSelectedFilters,
+        updateIngredientStyle,
+        updateRecipeCount,
+        capitalize,
+        validateIngredients
+    };
+}

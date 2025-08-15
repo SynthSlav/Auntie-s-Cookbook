@@ -64,7 +64,6 @@ function validateIngredients(ingredientFormsContainer) {
 // This ensures that the script runs after the DOM is fully loaded
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('All functionality loading...');
 
     // Filter functionality
     if (document.getElementById('recipeContainer')) {
@@ -231,31 +230,9 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Initialize action buttons
-        // This function sets up event listeners for the action buttons on the recipe detail page
-        function initializeActionButtons() {
-            const editBtn = document.querySelector('.btn-outline-warning');
-            if (editBtn) {
-                editBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    console.log('Edit recipe clicked');
-                });
-            }
 
-            const deleteBtn = document.querySelector('.btn-outline-danger');
-            if (deleteBtn) {
-                deleteBtn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (confirm('Are you sure you want to delete this recipe?')) {
-                        console.log('Delete recipe confirmed');
-                    }
-                });
-            }
-        }
 
         initializeIngredientCheckboxes();
-        initializeActionButtons();
-        console.log('Recipe detail features initialized');
     }
 
     // Add Recipe Form Functionality
@@ -268,7 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const isEditPage = document.getElementById('edit-recipe-form');
 
         if (!addIngredientBtn || !ingredientFormsContainer || !totalFormsInput) {
-            console.log('Add recipe form elements not found');
             return;
         }
 
@@ -497,7 +473,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('add-recipe-form') || document.getElementById('edit-recipe-form');
 
         if (!form) {
-            console.log('Form not found');
             return;
         }
 
@@ -538,8 +513,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-
-        console.log('Add recipe form initialized successfully');
     }
 });
 
