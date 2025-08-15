@@ -87,6 +87,10 @@ Performance metrics tested:
 **Issue**: Applied filters were being reset when users navigated between pages in the recipe list.
 **Solution**: Implemented URL parameter preservation to maintain filter state across pagination.
 
+#### 6. Ingredients Form & File Upload Checkbox
+**Issue**: Ingredients form has a checkbox, it is also present on the image file upload form input.
+**Solution**: I have been unable to find a way to target and remove the checkboxes.
+
 ## Credits & Acknowledgments
 
 ### AI Assistance
