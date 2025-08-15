@@ -70,7 +70,7 @@
                 <i class="fas fa-coffee fa-2x hero-icon mb-3"></i>
                 <h5 class="card-title">Breakfast</h5>
                 <p class="card-text">Start your day right</p>
-                <a href="#" class="btn custom-link-hero">View Recipes</a>
+                <a href="{% url 'recipe_list' %}?meal_type=breakfast" class="btn custom-link-hero">View Recipes</a>
             </div>
         </div>
     </div>
@@ -80,7 +80,8 @@
                 <i class="fas fa-hamburger fa-2x hero-icon mb-3"></i>
                 <h5 class="card-title">Lunch & Dinner</h5>
                 <p class="card-text">Hearty main courses</p>
-                <a href="#" class="btn custom-link-hero">View Recipes</a>
+                <a href="{% url 'recipe_list' %}?meal_type=lunch&meal_type=dinner" class="btn custom-link-hero">View
+                    Recipes</a>
             </div>
         </div>
     </div>
@@ -90,7 +91,7 @@
                 <i class="fas fa-cookie-bite fa-2x hero-icon mb-3"></i>
                 <h5 class="card-title">Desserts</h5>
                 <p class="card-text">Sweet treats & more</p>
-                <a href="#" class="btn custom-link-hero">View Recipes</a>
+                <a href="{% url 'recipe_list' %}?meal_type=dessert" class="btn custom-link-hero">View Recipes</a>
             </div>
         </div>
     </div>
@@ -100,7 +101,8 @@
                 <i class="fas fa-leaf fa-2x hero-icon mb-3"></i>
                 <h5 class="card-title">Healthy Options</h5>
                 <p class="card-text">Nutritious & delicious</p>
-                <a href="#" class="btn custom-link-hero">View Recipes</a>
+                <a href="{% url 'recipe_list' %}?dietary=vegetarian&dietary=vegan" class="btn custom-link-hero">View
+                    Recipes</a>
             </div>
         </div>
     </div>

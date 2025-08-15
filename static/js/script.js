@@ -1,64 +1,65 @@
 // Functions for filtering recipes, updating ingredient styles, and managing recipe counts
 // These functions are used in the recipe app to handle user interactions and data updates
 // They are also exported for testing purposes
-function getSelectedFilters() {
-    const filters = {
-        mealTypes: [],
-        difficulties: [],
-        dietary: []
-    };
 
-    document.querySelectorAll('input[id^="meal-"]:checked').forEach(function (checkbox) {
-        filters.mealTypes.push(checkbox.value);
-    });
+// function getSelectedFilters() {
+//     const filters = {
+//         mealTypes: [],
+//         difficulties: [],
+//         dietary: []
+//     };
 
-    document.querySelectorAll('input[id^="diff-"]:checked').forEach(function (checkbox) {
-        filters.difficulties.push(checkbox.value);
-    });
+//     document.querySelectorAll('input[id^="meal-"]:checked').forEach(function (checkbox) {
+//         filters.mealTypes.push(checkbox.value);
+//     });
 
-    document.querySelectorAll('input[id^="diet-"]:checked').forEach(function (checkbox) {
-        filters.dietary.push(checkbox.value);
-    });
+//     document.querySelectorAll('input[id^="diff-"]:checked').forEach(function (checkbox) {
+//         filters.difficulties.push(checkbox.value);
+//     });
 
-    return filters;
-}
+//     document.querySelectorAll('input[id^="diet-"]:checked').forEach(function (checkbox) {
+//         filters.dietary.push(checkbox.value);
+//     });
 
-function updateIngredientStyle(checkbox, ingredientText) {
-    if (checkbox.checked) {
-        ingredientText.style.textDecoration = 'line-through';
-        ingredientText.style.opacity = '0.6';
-    } else {
-        ingredientText.style.textDecoration = 'none';
-        ingredientText.style.opacity = '1';
-    }
-}
+//     return filters;
+// }
 
-function updateRecipeCount(count) {
-    const countElement = document.querySelector('.text-muted');
-    if (countElement && countElement.textContent.includes('recipe')) {
-        countElement.textContent = `Discover ${count} delicious recipes`;
-    }
-}
+// function updateIngredientStyle(checkbox, ingredientText) {
+//     if (checkbox.checked) {
+//         ingredientText.style.textDecoration = 'line-through';
+//         ingredientText.style.opacity = '0.6';
+//     } else {
+//         ingredientText.style.textDecoration = 'none';
+//         ingredientText.style.opacity = '1';
+//     }
+// }
 
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).replace('_', ' ');
-}
+// function updateRecipeCount(count) {
+//     const countElement = document.querySelector('.text-muted');
+//     if (countElement && countElement.textContent.includes('recipe')) {
+//         countElement.textContent = `Discover ${count} delicious recipes`;
+//     }
+// }
 
-function validateIngredients(ingredientFormsContainer) {
-    const visibleForms = ingredientFormsContainer.querySelectorAll('.ingredient-form:not(.d-none)');
-    let hasIngredient = false;
+// function capitalize(str) {
+//     return str.charAt(0).toUpperCase() + str.slice(1).replace('_', ' ');
+// }
 
-    visibleForms.forEach(form => {
-        const nameInput = form.querySelector('input[name$="-ingredient_name"]');
-        const deleteCheckbox = form.querySelector('input[name$="-DELETE"]');
+// function validateIngredients(ingredientFormsContainer) {
+//     const visibleForms = ingredientFormsContainer.querySelectorAll('.ingredient-form:not(.d-none)');
+//     let hasIngredient = false;
 
-        if (nameInput && nameInput.value.trim() && (!deleteCheckbox || !deleteCheckbox.checked)) {
-            hasIngredient = true;
-        }
-    });
+//     visibleForms.forEach(form => {
+//         const nameInput = form.querySelector('input[name$="-ingredient_name"]');
+//         const deleteCheckbox = form.querySelector('input[name$="-DELETE"]');
 
-    return hasIngredient;
-}
+//         if (nameInput && nameInput.value.trim() && (!deleteCheckbox || !deleteCheckbox.checked)) {
+//             hasIngredient = true;
+//         }
+//     });
+
+//     return hasIngredient;
+// }
 
 // Event listener for DOMContentLoaded to initialize functionality
 // This ensures that the script runs after the DOM is fully loaded
